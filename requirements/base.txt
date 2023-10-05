@@ -6,3 +6,6 @@ django-jazzmin
 drf-yasg
 djangorestframework
 django-filter
+djangorestframework-simplejwt
+pillow
+django-phonenumber-field[phonenumberslite]
