@@ -7,11 +7,11 @@ from apps.news.serializers import NewsSerializer
 
 class MainNewsViewSet(ListAPIView):
     serializer = NewsSerializer
-    model = News.objects.filter()
+    model = News.objects.all()
 
     def get(self, request, *args, **kwargs):
         main_news = News.objects.filter(position="main")[:4]
-        prime_news = News.objects.filter(position="prime").order_by("-created_at")[:3]
+        prime_news = News.objects.filter(position="prime", status='published').order_by("-created_at")[:3]
 
         main_news_serializer = NewsSerializer(main_news, many=True)
         prime_news_serializer = NewsSerializer(prime_news, many=True)
