@@ -2,9 +2,7 @@ from django.db import models
 from apps.common.models import BaseModel, NewsBase, LikeBase
 from django.utils.translation import gettext_lazy as _
 
-
-class InterviewLike(LikeBase):
-    pass
+from apps.users.models import Profile
 
 
 class InterviewTag(BaseModel):
@@ -33,3 +31,22 @@ class Interview(BaseModel, NewsBase):
     class Meta:
         verbose_name = 'Interview'
         verbose_name_plural = 'Interviews'
+
+
+class InterviewLike(LikeBase, BaseModel):
+    profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="podcast_preferences",
+        verbose_name=_("Profile")
+    )
+    content = models.ForeignKey(
+        Interview,
+        on_delete=models.CASCADE,
+        related_name="user_preferences",
+        verbose_name=_("Interview")
+    )
+
+    class Meta:
+        verbose_name = _("User Interview Like")
+        verbose_name_plural = _("User Interview Likes")

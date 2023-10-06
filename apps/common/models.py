@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.common.choices import LikeStatusChoices
+
 
 class NewsBase(models.Model):
     slug = models.CharField(max_length=255, verbose_name=_("Slug"), blank=True)
@@ -36,13 +38,9 @@ class ReportBase(models.Model):
 
 class LikeBase(models.Model):
     user = None
-    STATUS_CHOICES = [
-        ("liked", _("Liked")),
-        ("disliked", _("Disliked")),
-        ("neutral", _("Neutral")),
-    ]
+    content = None
     status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, verbose_name=_("Status")
+        max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Status")
     )
 
     class Meta:
