@@ -46,14 +46,14 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         data = {"refresh": str(tokens), "access": str(tokens.access_token)}
         return data
 
-    def validate(self, attrs):
-        phone_data = attrs.pop("phone_number")
-        signer = signing.TimestampSigner()
-        phone_data = signer.unsign_object(phone_data, max_age=600)
-        if phone_data.get("type") != CacheTypes.registration_sms_verification:
-            raise ValidationError(_("Wrong type!"))
-        attrs["phone_number"] = phone_data.get("phone")
-        return attrs
+    # def validate(self, attrs):
+    #     phone_data = attrs.pop("phone_number")
+    #     signer = signing.TimestampSigner()
+    #     phone_data = signer.unsign_object(phone_data, max_age=600)
+    #     if phone_data.get("type") != CacheTypes.registration_sms_verification:
+    #         raise ValidationError(_("Wrong type!"))
+    #     attrs["phone_number"] = phone_data.get("phone")
+    #     return attrs
 
     def create(self, validated_data):
         try:
