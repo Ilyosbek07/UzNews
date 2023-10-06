@@ -8,11 +8,15 @@ from rest_framework.response import Response
 
 from apps.users.cache import CacheTypes, generate_cache_key
 from apps.users.models import Profile, User
-from apps.users.serializers import (RecoveryCodeSerializer,
-                                    RegisterUserSerializer, SendCodeSerializer,
-                                    UserProfileSerializer,
-                                    VerificationRecoverySerializer,
-                                    VerificationRegistrationCodeSerializer, RecoverySetPasswordSerializer)
+from apps.users.serializers import (
+    RecoveryCodeSerializer,
+    RegisterUserSerializer,
+    SendCodeSerializer,
+    UserProfileSerializer,
+    VerificationRecoverySerializer,
+    VerificationRegistrationCodeSerializer,
+    RecoverySetPasswordSerializer,
+)
 from apps.users.shared import send_verification_code
 
 
@@ -40,13 +44,19 @@ class VerificationRegistrationCodeAPIView(generics.CreateAPIView):
         code = serializer.validated_data.get("code")
         session = serializer.validated_data.get("session")
 
-        cache_key = generate_cache_key(CacheTypes.registration_sms_verification, phone, session)
+        cache_key = generate_cache_key(
+            CacheTypes.registration_sms_verification, phone, session
+        )
 
         if not self.is_code_valid(cache_key, code):
-            return Response({"detail": "Wrong code!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Wrong code!"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         signer = signing.TimestampSigner()
-        phone_data = signer.sign_object({"phone": phone, "type": CacheTypes.registration_sms_verification})
+        phone_data = signer.sign_object(
+            {"phone": phone, "type": CacheTypes.registration_sms_verification}
+        )
 
         return Response({"phone": phone_data})
 
@@ -88,11 +98,17 @@ class VerificationRecoveryAPIView(generics.CreateAPIView):
         code = serializer.validated_data.get("code")
         session = serializer.validated_data.get("session")
 
-        cache_key = generate_cache_key(CacheTypes.forget_pass_verification, phone, session)
+        cache_key = generate_cache_key(
+            CacheTypes.forget_pass_verification, phone, session
+        )
         if not self.is_code_valid(cache_key, code):
-            return Response({"detail": "Wrong code!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Wrong code!"}, status=status.HTTP_400_BAD_REQUEST
+            )
         signer = signing.TimestampSigner()
-        phone_data = signer.sign_object({"phone": phone, "type": CacheTypes.forget_pass_verification})
+        phone_data = signer.sign_object(
+            {"phone": phone, "type": CacheTypes.forget_pass_verification}
+        )
 
         return Response({"phone": phone_data})
 

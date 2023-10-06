@@ -49,6 +49,7 @@ CUSTOM_APPS = [
     "apps.common",
     "apps.interview",
     "apps.users",
+    "apps.news",
 ]
 
 THIRD_PARTY_APPS = [
@@ -60,7 +61,7 @@ THIRD_PARTY_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",

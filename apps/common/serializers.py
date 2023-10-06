@@ -5,10 +5,10 @@ from apps.common.models import Advertising, SocialMedia
 class AdvertisingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertising
-        fields = ('id', 'file', 'type')
+        fields = ("id", "file", "type")
 
 
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
-        fields = ('id', 'logo', 'url', 'number', 'desc')
+        fields = ("id", "logo", "url", "number", "desc")
