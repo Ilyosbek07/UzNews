@@ -16,7 +16,9 @@ class CommentBase(models.Model):
     user = None
     text = models.TextField(verbose_name=_("Text"))
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
-    parent = models.ForeignKey('self', verbose_name=_("Parent"), on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        "self", verbose_name=_("Parent"), on_delete=models.CASCADE
+    )
     image = models.ImageField(verbose_name=_("Image"))
 
     class Meta:
@@ -24,8 +26,9 @@ class CommentBase(models.Model):
 
 
 class ReportBase(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Name"))
-    text = models.CharField(max_length=255, verbose_name=_("Text"))
+    text = models.CharField(
+        max_length=255, verbose_name=_("Text"), null=True, blank=True
+    )
 
     class Meta:
         abstract = True
@@ -34,11 +37,13 @@ class ReportBase(models.Model):
 class LikeBase(models.Model):
     user = None
     STATUS_CHOICES = [
-        ('liked', _("Liked")),
-        ('disliked', _("Disliked")),
-        ('neutral', _("Neutral")),
+        ("liked", _("Liked")),
+        ("disliked", _("Disliked")),
+        ("neutral", _("Neutral")),
     ]
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, verbose_name=_("Status"))
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, verbose_name=_("Status")
+    )
 
     class Meta:
         abstract = True
@@ -65,12 +70,14 @@ class BaseModel(models.Model):
 class Advertising(models.Model):
     file = models.FileField(verbose_name=_("File"))
     Advertising_choices = [
-        ('banner', _("Banner")),
-        ('banner2', _("Banner 2")),
-        ('pr_article', _("Pr Article")),
-        ('full_screen', _("Full Screen")),
+        ("banner", _("Banner")),
+        ("banner2", _("Banner 2")),
+        ("pr_article", _("Pr Article")),
+        ("full_screen", _("Full Screen")),
     ]
-    type = models.CharField(max_length=55, choices=Advertising_choices, verbose_name=_("Type"))
+    type = models.CharField(
+        max_length=55, choices=Advertising_choices, verbose_name=_("Type")
+    )
 
     def __str__(self):
         return self.type

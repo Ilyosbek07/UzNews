@@ -11,7 +11,7 @@ from apps.users.models import User, Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", 'first_name', "phone_number", "email")
+        fields = ("id", "first_name", "phone_number", "email")
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -46,14 +46,14 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         data = {"refresh": str(tokens), "access": str(tokens.access_token)}
         return data
 
-    def validate(self, attrs):
-        phone_data = attrs.pop("phone_number")
-        signer = signing.TimestampSigner()
-        phone_data = signer.unsign_object(phone_data, max_age=600)
-        if phone_data.get("type") != CacheTypes.registration_sms_verification:
-            raise ValidationError(_("Wrong type!"))
-        attrs["phone_number"] = phone_data.get("phone")
-        return attrs
+    # def validate(self, attrs):
+    #     phone_data = attrs.pop("phone_number")
+    #     signer = signing.TimestampSigner()
+    #     phone_data = signer.unsign_object(phone_data, max_age=600)
+    #     if phone_data.get("type") != CacheTypes.registration_sms_verification:
+    #         raise ValidationError(_("Wrong type!"))
+    #     attrs["phone_number"] = phone_data.get("phone")
+    #     return attrs
 
     def create(self, validated_data):
         try:
@@ -80,7 +80,9 @@ class SendCodeSerializer(serializers.ModelSerializer):
 
     def validate_phone_number(self, phone_number):
         if User.objects.filter(phone_number=phone_number).exists():
-            raise ValidationError(f"A user with the phone number {phone_number} already exists.")
+            raise ValidationError(
+                f"A user with the phone number {phone_number} already exists."
+            )
         return phone_number
 
 
@@ -90,6 +92,8 @@ class VerificationRegistrationCodeSerializer(SendCodeSerializer):
 
     class Meta(SendCodeSerializer.Meta):
         fields = SendCodeSerializer.Meta.fields + ["code", "session"]
+
+
 class RecoveryCodeSerializer(serializers.Serializer):
     phone_number = serializers.CharField()
 
@@ -129,5 +133,3 @@ class RecoverySetPasswordSerializer(serializers.Serializer):
         except Exception as e:
             raise ValidationError(str(e))
         return user
-
-

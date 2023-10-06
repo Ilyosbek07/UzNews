@@ -4,50 +4,87 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Advertising',
+            name="Advertising",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to='', verbose_name='File')),
-                ('type', models.CharField(choices=[('banner', 'Banner'), ('banner2', 'Banner 2'), ('pr_article', 'Pr Article'), ('full_screen', 'Full Screen')], max_length=55, verbose_name='Type')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.FileField(upload_to="", verbose_name="File")),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("banner", "Banner"),
+                            ("banner2", "Banner 2"),
+                            ("pr_article", "Pr Article"),
+                            ("full_screen", "Full Screen"),
+                        ],
+                        max_length=55,
+                        verbose_name="Type",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Advertising',
-                'verbose_name_plural': 'Advertisements',
+                "verbose_name": "Advertising",
+                "verbose_name_plural": "Advertisements",
             },
         ),
         migrations.CreateModel(
-            name='ContactBase',
+            name="ContactBase",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('phone_number', models.CharField(max_length=255, verbose_name='Phone Number')),
-                ('text', models.TextField(verbose_name='Text')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="Name")),
+                (
+                    "phone_number",
+                    models.CharField(max_length=255, verbose_name="Phone Number"),
+                ),
+                ("text", models.TextField(verbose_name="Text")),
             ],
             options={
-                'verbose_name': 'Contact',
-                'verbose_name_plural': 'Contacts',
+                "verbose_name": "Contact",
+                "verbose_name_plural": "Contacts",
             },
         ),
         migrations.CreateModel(
-            name='SocialMedia',
+            name="SocialMedia",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('logo', models.ImageField(upload_to='', verbose_name='Logo')),
-                ('url', models.URLField(verbose_name='URL')),
-                ('number', models.IntegerField(verbose_name='Number')),
-                ('desc', models.TextField(verbose_name='Description')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("logo", models.ImageField(upload_to="", verbose_name="Logo")),
+                ("url", models.URLField(verbose_name="URL")),
+                ("number", models.IntegerField(verbose_name="Number")),
+                ("desc", models.TextField(verbose_name="Description")),
             ],
             options={
-                'verbose_name': 'Social Media',
-                'verbose_name_plural': 'Social Media',
+                "verbose_name": "Social Media",
+                "verbose_name_plural": "Social Media",
             },
         ),
     ]
