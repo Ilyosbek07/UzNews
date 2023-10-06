@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class NewsBase(models.Model):
-    slug = models.CharField(max_length=255, verbose_name=_("Slug"))
+    slug = models.CharField(max_length=255, verbose_name=_("Slug"), blank=True)
     title = models.CharField(max_length=255, verbose_name=_("Title"))
     author = None
     desc = models.TextField(verbose_name=_("Description"))
