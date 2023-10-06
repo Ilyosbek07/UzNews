@@ -7,9 +7,10 @@ from .schema import swagger_urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("users/", include('apps.users.urls')),
-    path("common/", include('apps.common.urls')),
-    path("interview/", include('apps.interview.urls')),
+    path("users/", include("apps.users.urls")),
+    path("common/", include("apps.common.urls")),
+    path("interview/", include("apps.interview.urls")),
+    path("news/", include("apps.news.urls")),
 ]
 
 urlpatterns += swagger_urlpatterns

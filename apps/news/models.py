@@ -2,6 +2,7 @@ from apps.users.models import User
 from django.db import models
 from apps.common.models import NewsBase, BaseModel, LikeBase, CommentBase, ReportBase
 from apps.news.choices import NewsPositionChoices, NewsTypeChoices, NewsStatusChoices
+from apps.news.managers import NewsManager
 
 
 class NewsTag(models.Model):
@@ -38,6 +39,7 @@ class News(NewsBase, BaseModel):
     type = models.CharField(
         max_length=100, choices=NewsTypeChoices.choices, default=NewsTypeChoices.NEWS
     )
+    objects = NewsManager()
 
     def __str__(self):
         return self.title

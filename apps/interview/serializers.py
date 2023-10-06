@@ -6,7 +6,7 @@ from apps.interview.models import Interview, InterviewTag
 class InterviewTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = InterviewTag
-        fields = ('name',)
+        fields = ("name",)
 
 
 class InterviewSerializer(serializers.ModelSerializer):
@@ -14,9 +14,4 @@ class InterviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interview
-        fields = (
-            'id',
-            'tag',
-            'subtitle',
-            'video_url'
-        )
+        fields = ("id", "tag", "subtitle", "video_url")
