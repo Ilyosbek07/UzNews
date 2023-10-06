@@ -1,7 +1,16 @@
 from rest_framework import serializers
 
-from apps.interview.models import Interview, InterviewTag
+from apps.interview.models import Interview, InterviewTag, InterviewLike
 
+
+class InterviewLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InterviewLike
+        fields = (
+            '',
+            '',
+            '',
+        )
 
 class InterviewTagSerializer(serializers.ModelSerializer):
     class Meta:
