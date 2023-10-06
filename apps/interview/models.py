@@ -19,7 +19,7 @@ class InterviewTag(BaseModel):
 class Interview(BaseModel, NewsBase):
     tag = models.ManyToManyField(
         InterviewTag,
-        related_name='interview_tag',
+        related_name='interview_tag'
     )
     subtitle = models.CharField(max_length=255)
     video_url = models.URLField(verbose_name=_('Video Url'))
@@ -37,13 +37,13 @@ class InterviewLike(LikeBase, BaseModel):
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name="podcast_preferences",
+        related_name="interview_user_like",
         verbose_name=_("Profile")
     )
     content = models.ForeignKey(
         Interview,
         on_delete=models.CASCADE,
-        related_name="user_preferences",
+        related_name="interview_like",
         verbose_name=_("Interview")
     )
 
