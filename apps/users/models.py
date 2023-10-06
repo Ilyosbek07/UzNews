@@ -38,7 +38,6 @@ class UserManager(BaseUserManager):
         return self._create_user(phone_number, password, **extra_fields)
 
 
-
 class User(AbstractUser, BaseModel):
     phone_number = PhoneNumberField(
         verbose_name=_("Phone number"),

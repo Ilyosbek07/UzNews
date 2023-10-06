@@ -10,7 +10,7 @@ class InterviewTagListAPIView(generics.ListAPIView):
 
 
 class InterviewListAPIView(generics.ListAPIView):
-    queryset = Interview.objects.order_by('-created_at')
+    queryset = Interview.objects.order_by("-created_at")
     serializer_class = InterviewSerializer
 
 

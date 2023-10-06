@@ -26,7 +26,9 @@ class CommentBase(models.Model):
 
 
 class ReportBase(models.Model):
-    text = models.CharField(max_length=255, verbose_name=_("Text"), null=True, blank=True)
+    text = models.CharField(
+        max_length=255, verbose_name=_("Text"), null=True, blank=True
+    )
 
     class Meta:
         abstract = True
