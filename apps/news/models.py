@@ -30,7 +30,11 @@ class News(NewsBase, BaseModel):
         choices=NewsPositionChoices.choices,
         default=NewsPositionChoices.ORDINARY,
     )
-    status = models.CharField(max_length=100, choices=NewsStatusChoices.choices, default=NewsStatusChoices.DRAFT)
+    status = models.CharField(
+        max_length=100,
+        choices=NewsStatusChoices.choices,
+        default=NewsStatusChoices.DRAFT,
+    )
     type = models.CharField(
         max_length=100, choices=NewsTypeChoices.choices, default=NewsTypeChoices.NEWS
     )

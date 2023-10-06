@@ -16,5 +16,3 @@ class NewsStatusChoices(models.TextChoices):
 class NewsTypeChoices(models.TextChoices):
     SPECIAL = "special report", "Special Report"
     NEWS = "news", "News"
-
-
