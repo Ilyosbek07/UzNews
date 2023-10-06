@@ -88,4 +88,4 @@ class Profile(BaseModel):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return self.name
+        return self.surname
