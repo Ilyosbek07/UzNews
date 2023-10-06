@@ -2,7 +2,7 @@ from django.db import models
 from apps.common.models import BaseModel, NewsBase, LikeBase
 from django.utils.translation import gettext_lazy as _
 
-class InterviewLike(LikeBase)
+class InterviewLike(LikeBase):
     pass
 class InterviewTag(BaseModel):
     name = models.CharField(max_length=255)
