@@ -49,6 +49,7 @@ CUSTOM_APPS = [
     "apps.common",
     "apps.interview",
     "apps.users",
+    "apps.podcast",
 ]
 
 THIRD_PARTY_APPS = [
