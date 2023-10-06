@@ -24,6 +24,7 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = News
         fields = (
@@ -35,10 +36,15 @@ class NewsSerializer(serializers.ModelSerializer):
             "status",
             "type",
             "title",
-            "content",
+            "slug",
+            "author",
+            "desc",
+            "view_count",
             "created_at",
             "updated_at",
         )
+
+
 
 
 class NewsLikeSerializer(serializers.ModelSerializer):
