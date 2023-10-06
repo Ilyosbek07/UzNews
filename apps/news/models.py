@@ -1,3 +1,5 @@
+from django.utils.text import slugify
+
 from apps.users.models import User
 from django.db import models
 from apps.common.models import NewsBase, BaseModel, LikeBase, CommentBase, ReportBase
@@ -23,6 +25,7 @@ class NewsCategory(models.Model):
 
 
 class News(NewsBase, BaseModel):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     cover = models.ImageField(upload_to="news/cover_images/")
     tag = models.ManyToManyField(NewsTag)
     category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE)
@@ -41,9 +44,21 @@ class News(NewsBase, BaseModel):
     )
     objects = NewsManager()
 
+    class Meta:
+        verbose_name_plural = 'News'
+
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    @property
+    def view_count(self):
+        return NewsView.objects.filter(news__id=self.id).count()
+        
 
 class NewsLike(LikeBase):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -84,6 +99,7 @@ class BreakingNews(BaseModel):
 
     class Meta:
         unique_together = ("id", "news")
+        verbose_name_plural = 'BreakingNews'
 
     def __str__(self):
         return self.title
