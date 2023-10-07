@@ -1,8 +1,7 @@
 from apps.users.models import Profile, User
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
-from apps.users.serializers import (RegisterUserSerializer,
-                                    UserProfileSerializer)
+from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer
 
 
 class RegistrationAPIView(generics.CreateAPIView):

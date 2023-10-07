@@ -53,12 +53,7 @@ CUSTOM_APPS = [
     "apps.news",
 ]
 
-THIRD_PARTY_APPS = [
-    "rest_framework",
-    "drf_yasg",
-    "corsheaders",
-    'modeltranslation'
-]
+THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -79,7 +74,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -145,18 +140,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 gettext = lambda s: s
 
 LANGUAGES = (
-    ('uz', gettext('Uzbek')),
-    ('ru', gettext('Russian')),
-    ('en', gettext('English')),
+    ("uz", gettext("Uzbek")),
+    ("ru", gettext("Russian")),
+    ("en", gettext("English")),
 )
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
+    BASE_DIR / "locale/",
 ]
 
 TIME_ZONE = "Asia/Tashkent"

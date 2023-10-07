@@ -9,3 +9,4 @@ django-filter
 djangorestframework-simplejwt
 pillow
 django-phonenumber-field[phonenumberslite]
+django-modeltranslation

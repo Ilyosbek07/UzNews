@@ -4,9 +4,9 @@ from modeltranslation.translator import TranslationOptions, register
 
 @register(Interview)
 class InterviewTranslationOptions(TranslationOptions):
-    fields = ('title', 'subtitle', 'desc')
+    fields = ("title", "subtitle", "desc")
 
 
 @register(InterviewTag)
 class InterviewTagTranslationOptions(TranslationOptions):
-    fields = ('name',)
+    fields = ("name",)

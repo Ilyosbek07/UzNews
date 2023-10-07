@@ -5,4 +5,4 @@ from apps.users.models import Profile
 
 @register(Profile)
 class ProfileTranslationOptions(TranslationOptions):
-    fields = ('info', 'role')
+    fields = ("info", "role")
