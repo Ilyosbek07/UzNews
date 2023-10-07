@@ -57,6 +57,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_yasg",
     "corsheaders",
+    'modeltranslation'
 ]
 
 REST_FRAMEWORK = {
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -143,6 +145,20 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+
+gettext = lambda s: s
+
+LANGUAGES = (
+    ('uz', gettext('Uzbek')),
+    ('ru', gettext('Russian')),
+    ('en', gettext('English')),
+)
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale/',
+]
+
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
@@ -181,4 +197,5 @@ CELERY_TIMEZONE = "Asia/Tashkent"
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
 AUTH_USER_MODEL = "users.User"

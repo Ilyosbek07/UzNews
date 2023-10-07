@@ -1,24 +1,15 @@
-# models.py
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-    Permission,
-    Group,
-    AbstractUser,
-)
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from apps.common.models import BaseModel
+from apps.users.choices import Role
 
 
 class UserManager(BaseUserManager):
-
     def create_user(self, phone_number, password, **extra_fields):
         if not phone_number:
             raise ValueError("The given phone number must be set")
@@ -46,9 +37,7 @@ class User(AbstractUser, BaseModel):
         unique=True,
     )
 
-    username = models.CharField(
-        verbose_name=_("username"), max_length=150, unique=True, blank=True, null=True
-    )
+    username = models.CharField(verbose_name=_("username"), max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField(verbose_name=_("Email"), null=True, blank=True)
 
     objects = UserManager()
@@ -71,22 +60,15 @@ class User(AbstractUser, BaseModel):
 
 
 class Profile(BaseModel):
-    class Role(models.TextChoices):
-        simple_user = "simple user", _("Simple User")
-        author = "author", _("Author")
-        moderator = "moderator", _("Moderator")
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.ForeignKey(User, related_name="profile", verbose_name=_("User"), on_delete=models.CASCADE)
     surname = models.CharField(max_length=255, verbose_name=_("Surname"))
-    image = models.ImageField(unique="user_image/")
-    info = models.TextField(verbose_name=_("Info"))
-    role = models.CharField(
-        max_length=55, choices=Role.choices, default=Role.simple_user
-    )
-    telegram = models.URLField(verbose_name=_("Telegram"))
-    instagram = models.URLField(verbose_name=_("Instagram"))
-    facebook = models.URLField(verbose_name=_("Facebook"))
-    twitter = models.URLField(verbose_name=_("Twitter"))
+    image = models.ImageField(verbose_name=_("Profile Image"), unique="user_image/")
+    info = models.TextField(verbose_name=_("Info"), null=True, blank=True)
+    role = models.CharField(_("Role"), max_length=55, choices=Role.choices, default=Role.simple_user)
+    telegram = models.URLField(verbose_name=_("Telegram"), null=True, blank=True)
+    instagram = models.URLField(verbose_name=_("Instagram"), null=True, blank=True)
+    facebook = models.URLField(verbose_name=_("Facebook"), null=True, blank=True)
+    twitter = models.URLField(verbose_name=_("Twitter"), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Profile")

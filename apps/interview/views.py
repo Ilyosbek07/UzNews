@@ -1,7 +1,8 @@
 from rest_framework import generics
 
 from apps.interview.models import Interview, InterviewTag
-from apps.interview.serializers import InterviewSerializer, InterviewTagSerializer
+from apps.interview.serializers import (InterviewSerializer,
+                                        InterviewTagSerializer)
 
 
 class InterviewTagListAPIView(generics.ListAPIView):
