@@ -53,8 +53,15 @@ CUSTOM_APPS = [
     "apps.news",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation"]
-
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_yasg",
+    "corsheaders",
+    "modeltranslation",
+    "ckeditor",
+    "ckeditor_uploader"
+]
+CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",

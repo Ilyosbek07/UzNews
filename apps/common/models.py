@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -8,7 +9,7 @@ class NewsBase(models.Model):
     title = models.CharField(max_length=255, verbose_name=_("Title"))
     slug = models.SlugField(default="", null=False, verbose_name=_('Slug'))
     author = None
-    desc = models.TextField(verbose_name=_("Description"))
+    desc = RichTextField(verbose_name=_("Description"),default="")
 
     class Meta:
         abstract = True
