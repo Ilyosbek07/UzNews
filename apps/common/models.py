@@ -5,8 +5,8 @@ from apps.common.choices import LikeStatusChoices
 
 
 class NewsBase(models.Model):
-    slug = models.CharField(max_length=255, verbose_name=_("Slug"), blank=True)
     title = models.CharField(max_length=255, verbose_name=_("Title"))
+    slug = models.SlugField(default="", null=False, verbose_name=_('Slug'))
     author = None
     desc = models.TextField(verbose_name=_("Description"))
 

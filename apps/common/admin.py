@@ -4,9 +4,9 @@ from apps.common.models import Advertising, SocialMedia
 
 @admin.register(Advertising)
 class AdvertisingAdmin(admin.ModelAdmin):
-    list_display = ("id", "file", "type")  # Customize the list display fields
-    list_filter = ("type",)  # Add filtering options based on 'type'
-    search_fields = ("type",)  # Enable search by 'type'
+    list_display = ("id", "file", "type")
+    list_filter = ("type",)
+    search_fields = ("type",)
 
 
 @admin.register(SocialMedia)
