@@ -51,6 +51,7 @@ CUSTOM_APPS = [
     "apps.users",
     "apps.podcast",
     "apps.news",
+    "apps.photoreport",
 ]
 
 THIRD_PARTY_APPS = [
