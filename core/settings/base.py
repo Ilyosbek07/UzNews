@@ -52,16 +52,10 @@ CUSTOM_APPS = [
     "apps.podcast",
     "apps.news",
     "apps.photoreport",
+    "apps.review"
 ]
 
-THIRD_PARTY_APPS = [
-    "rest_framework",
-    "drf_yasg",
-    "corsheaders",
-    "modeltranslation",
-    "ckeditor",
-    "ckeditor_uploader"
-]
+THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation", "ckeditor", "ckeditor_uploader"]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -159,7 +153,7 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 LOCALE_PATHS = [
     BASE_DIR / "locale/",
 ]
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
