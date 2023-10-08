@@ -45,7 +45,15 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-CUSTOM_APPS = ["apps.common", "apps.interview", "apps.users", "apps.podcast", "apps.news", "apps.review"]
+CUSTOM_APPS = [
+    "apps.common",
+    "apps.interview",
+    "apps.users",
+    "apps.podcast",
+    "apps.news",
+    "apps.photoreport",
+    "apps.review"
+]
 
 THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation", "ckeditor", "ckeditor_uploader"]
 CKEDITOR_UPLOAD_PATH = "uploads/"
