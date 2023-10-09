@@ -1,11 +1,12 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from apps.common.models import BaseModel, NewsBase
+from apps.common.models import BaseModel
 from apps.users.models import Profile
 
-from .choices import PreferenceStatusChoices
+from .choices import LikeStatusChoices, PodcastStatusChoices
+
 
 
 class Tag(BaseModel):
@@ -31,11 +32,13 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
-
-class Podcast(BaseModel, NewsBase):
+class Podcast(BaseModel):
+    title = models.CharField(_("Title"), max_length=255)
+    slug = models.SlugField(_("Slug"))
+    subtitle = models.CharField(_("Subtitle"), max_length=255)
+    body = RichTextUploadingField(_("Body"))
     view_count = models.PositiveIntegerField(_("View count"), default=0)
-    like_count = models.PositiveIntegerField(_("Like count"), default=0)
-    dislike_count = models.PositiveSmallIntegerField(_("Dislike count"), default=0)
+    status = models.CharField(_("Status"), max_length=2, choices=PodcastStatusChoices.choices)
     cover = models.ImageField(_("Cover"), upload_to="podcast/covers/", default="default_podcast_cover.png")
     file = models.FileField(
         _("File"),
@@ -58,29 +61,86 @@ class Podcast(BaseModel, NewsBase):
         return self.title
 
 
-class UserPreferenceBaseModel(models.Model):
+class ProfilePodcastLike(BaseModel):
     status = models.CharField(
-        _("Status"), max_length=1, choices=PreferenceStatusChoices.choices, default=PreferenceStatusChoices.NEUTRAL
+        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
     )
-    profile = None
-    content = None
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="podcast_likes", verbose_name=_("Profile")
+    )
+    podcast = models.ForeignKey(
+        Podcast, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Podcast")
+    )
 
     class Meta:
-        unique_together = ["profile", "content"]
-        abstract = True
+        unique_together = ["profile", "podcast"]
+        verbose_name = _("Profile Podcast Like")
+        verbose_name_plural = _("Profile Podcast Likes")
 
     def __str__(self):
-        return f"{self.profile.__str__()}: {self.content.__str__()}"
+        return f"{self.profile.__str__()}: {self.podcast.__str__()}"
 
 
-class UserPodcastPreference(BaseModel, UserPreferenceBaseModel):
+class Comment(BaseModel):
+    text = models.TextField(_("Text"), max_length=400)
+    is_active = models.BooleanField(_("Is active"), default=True)
+    image = models.ImageField(_("Image"), upload_to="podcast/comments/", null=True, blank=True)
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="podcast_preferences", verbose_name=_("Profile")
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="podcast_comments",
+        verbose_name=_("Owner"),
     )
-    content = models.ForeignKey(
-        Podcast, on_delete=models.CASCADE, related_name="user_preferences", verbose_name=_("Podcast")
+    podcast = models.ForeignKey(Podcast, on_delete=models.CASCADE, related_name="comments", verbose_name=_("Podcast"))
+    parent = models.ForeignKey(
+        to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name="replies", verbose_name=_("Parent")
     )
 
     class Meta:
-        verbose_name = _("User Podcast Preference")
-        verbose_name_plural = _("User Podcast Preferences")
+        verbose_name = _("Podcast Comment")
+        verbose_name_plural = _("Podcast Comments")
+
+    def __str__(self):
+        return self.text
+
+
+class CommentComplaint(BaseModel):
+    text = models.TextField(_("Text"), max_length=400)
+    profile = models.ForeignKey(
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="podcast_comment_complaints",
+        verbose_name=_("Owner"),
+    )
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="complaints", verbose_name=_("Comment"))
+
+    class Meta:
+        verbose_name = _("Podcast Comment Complaint")
+        verbose_name_plural = _("Podcast Comment Complaints")
+
+    def __str__(self):
+        return self.text
+
+
+class ProfilePodcastCommentLike(BaseModel):
+    status = models.CharField(
+        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
+    )
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="podcast_comment_likes", verbose_name=_("Profile")
+    )
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Comment")
+    )
+
+    class Meta:
+        unique_together = ["profile", "comment"]
+        verbose_name = _("Profile Podcast Comment Like")
+        verbose_name_plural = _("Profile Podcast  Comment Likes")
+
+    def __str__(self):
+        return f"{self.profile.__str__()}: {self.comment.__str__()}"

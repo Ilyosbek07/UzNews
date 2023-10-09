@@ -51,10 +51,20 @@ CUSTOM_APPS = [
     "apps.users",
     "apps.podcast",
     "apps.news",
+    "apps.photoreport",
+    "apps.review",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation"]
-
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_yasg",
+    "corsheaders",
+    "modeltranslation",
+    "ckeditor",
+    "ckeditor_uploader",
+    "django_filters",
+]
+CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
@@ -138,9 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 gettext = lambda s: s
 
@@ -149,11 +156,12 @@ LANGUAGES = (
     ("ru", gettext("Russian")),
     ("en", gettext("English")),
 )
+MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 
 LOCALE_PATHS = [
     BASE_DIR / "locale/",
 ]
-
+LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
