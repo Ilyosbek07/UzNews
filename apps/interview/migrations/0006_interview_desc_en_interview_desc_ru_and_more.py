@@ -4,70 +4,69 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interview', '0005_alter_interview_is_main_alter_interview_subtitle_and_more'),
+        ("interview", "0005_alter_interview_is_main_alter_interview_subtitle_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='interview',
-            name='desc_en',
-            field=models.TextField(null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_en",
+            field=models.TextField(null=True, verbose_name="Description"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='desc_ru',
-            field=models.TextField(null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_ru",
+            field=models.TextField(null=True, verbose_name="Description"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='desc_uz',
-            field=models.TextField(null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_uz",
+            field=models.TextField(null=True, verbose_name="Description"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='subtitle_en',
-            field=models.CharField(max_length=255, null=True, verbose_name='Subtitle'),
+            model_name="interview",
+            name="subtitle_en",
+            field=models.CharField(max_length=255, null=True, verbose_name="Subtitle"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='subtitle_ru',
-            field=models.CharField(max_length=255, null=True, verbose_name='Subtitle'),
+            model_name="interview",
+            name="subtitle_ru",
+            field=models.CharField(max_length=255, null=True, verbose_name="Subtitle"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='subtitle_uz',
-            field=models.CharField(max_length=255, null=True, verbose_name='Subtitle'),
+            model_name="interview",
+            name="subtitle_uz",
+            field=models.CharField(max_length=255, null=True, verbose_name="Subtitle"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='title_en',
-            field=models.CharField(max_length=255, null=True, verbose_name='Title'),
+            model_name="interview",
+            name="title_en",
+            field=models.CharField(max_length=255, null=True, verbose_name="Title"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='title_ru',
-            field=models.CharField(max_length=255, null=True, verbose_name='Title'),
+            model_name="interview",
+            name="title_ru",
+            field=models.CharField(max_length=255, null=True, verbose_name="Title"),
         ),
         migrations.AddField(
-            model_name='interview',
-            name='title_uz',
-            field=models.CharField(max_length=255, null=True, verbose_name='Title'),
+            model_name="interview",
+            name="title_uz",
+            field=models.CharField(max_length=255, null=True, verbose_name="Title"),
         ),
         migrations.AddField(
-            model_name='interviewtag',
-            name='name_en',
-            field=models.CharField(max_length=255, null=True, verbose_name='Name'),
+            model_name="interviewtag",
+            name="name_en",
+            field=models.CharField(max_length=255, null=True, verbose_name="Name"),
         ),
         migrations.AddField(
-            model_name='interviewtag',
-            name='name_ru',
-            field=models.CharField(max_length=255, null=True, verbose_name='Name'),
+            model_name="interviewtag",
+            name="name_ru",
+            field=models.CharField(max_length=255, null=True, verbose_name="Name"),
         ),
         migrations.AddField(
-            model_name='interviewtag',
-            name='name_uz',
-            field=models.CharField(max_length=255, null=True, verbose_name='Name'),
+            model_name="interviewtag",
+            name="name_uz",
+            field=models.CharField(max_length=255, null=True, verbose_name="Name"),
         ),
     ]

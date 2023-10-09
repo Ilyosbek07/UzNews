@@ -17,6 +17,9 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    category = NewsCategorySerializer()
+    tag = NewsTagSerializer(many=True)
+
     class Meta:
         model = News
         fields = (
@@ -36,6 +39,12 @@ class NewsSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+
+class TimeLineNewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ("id", "title", "created_at")
 
 
 class NewsLikeSerializer(serializers.ModelSerializer):

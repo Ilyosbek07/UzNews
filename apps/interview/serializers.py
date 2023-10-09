@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.interview.models import Interview, InterviewTag, InterviewLike
+from apps.interview.models import Interview, InterviewLike, InterviewTag
 
 
 class InterviewLikeSerializer(serializers.ModelSerializer):
@@ -24,4 +24,14 @@ class InterviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interview
-        fields = ("id", "title", "subtitle", "status", "video_url", "tag","date_time_in_word", "created_at", "updated_at")
+        fields = (
+            "id",
+            "title",
+            "subtitle",
+            "status",
+            "video_url",
+            "tag",
+            "date_time_in_word",
+            "created_at",
+            "updated_at",
+        )

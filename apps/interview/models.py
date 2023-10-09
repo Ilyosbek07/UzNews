@@ -23,13 +23,13 @@ class Interview(BaseModel, NewsBase):
         max_length=55,
         choices=InterviewStyleStatusChoices.choices,
         verbose_name=_("Style Type"),
-        default=InterviewStyleStatusChoices.STYLE_1
+        default=InterviewStyleStatusChoices.STYLE_1,
     )
     status = models.CharField(
         max_length=55,
         choices=StatusChoices.choices,
         verbose_name=_("Status"),
-        default=StatusChoices.DRAFT
+        default=StatusChoices.DRAFT,
     )
     tag = models.ManyToManyField(InterviewTag, related_name="interview_tag", verbose_name=_("Tag"))
     subtitle = models.CharField(verbose_name=_("Subtitle"), max_length=255)
@@ -51,10 +51,16 @@ class Interview(BaseModel, NewsBase):
 
 class InterviewLike(LikeBase, BaseModel):
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="interview_user_like", verbose_name=_("Profile")
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="interview_user_like",
+        verbose_name=_("Profile"),
     )
     content = models.ForeignKey(
-        Interview, on_delete=models.CASCADE, related_name="interview_like", verbose_name=_("Interview")
+        Interview,
+        on_delete=models.CASCADE,
+        related_name="interview_like",
+        verbose_name=_("Interview"),
     )
 
     class Meta:

@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import (BaseModel, CommentBase, LikeBase, NewsBase,
                                 ReportBase)
 from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
-                               NewsStyleChoices)
+                               NewsStyleChoices, NewsTypeChoices)
 from apps.news.managers import NewsManager
 from apps.users.models import User
 
@@ -44,6 +44,7 @@ class News(NewsBase, BaseModel):
         choices=NewsStatusChoices.choices,
         default=NewsStatusChoices.DRAFT,
     )
+    type = models.CharField(max_length=100, choices=NewsTypeChoices.choices, default=NewsTypeChoices.NEWS)
     style = models.CharField(
         _("news appearing style in site"),
         max_length=100,
@@ -69,7 +70,7 @@ class News(NewsBase, BaseModel):
         data = dict()
         if self.created_at.date() == timezone.now().date():
             time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
-            if int(time_difference_in_seconds) > 60:
+            if 3600 > int(time_difference_in_seconds) > 60:
                 data["minute"] = int((int(time_difference_in_seconds) / 60))
             elif 86400 >= int(time_difference_in_seconds) >= 3600:
                 data["hour"] = int(time_difference_in_seconds / 3600)

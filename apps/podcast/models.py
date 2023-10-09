@@ -2,11 +2,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from apps.common.models import BaseModel
 from apps.users.models import Profile
 
 from .choices import LikeStatusChoices, PodcastStatusChoices
-
 
 
 class Tag(BaseModel):
@@ -32,6 +32,7 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
+
 class Podcast(BaseModel):
     title = models.CharField(_("Title"), max_length=255)
     slug = models.SlugField(_("Slug"))
@@ -47,10 +48,18 @@ class Podcast(BaseModel):
     )
     tags = models.ManyToManyField(Tag, verbose_name=_("Tags"), related_name="podcasts")
     author = models.ForeignKey(
-        Profile, null=True, blank=True, on_delete=models.SET_NULL, related_name="podcasts", verbose_name=_("Author")
+        Profile,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="podcasts",
+        verbose_name=_("Author"),
     )
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="podcasts", verbose_name=_("Category")
+        Category,
+        on_delete=models.CASCADE,
+        related_name="podcasts",
+        verbose_name=_("Category"),
     )
 
     class Meta:
@@ -63,13 +72,22 @@ class Podcast(BaseModel):
 
 class ProfilePodcastLike(BaseModel):
     status = models.CharField(
-        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
+        _("Status"),
+        max_length=1,
+        choices=LikeStatusChoices.choices,
+        default=LikeStatusChoices.NEUTRAL,
     )
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="podcast_likes", verbose_name=_("Profile")
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="podcast_likes",
+        verbose_name=_("Profile"),
     )
     podcast = models.ForeignKey(
-        Podcast, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Podcast")
+        Podcast,
+        on_delete=models.CASCADE,
+        related_name="profile_likes",
+        verbose_name=_("Podcast"),
     )
 
     class Meta:
@@ -93,9 +111,19 @@ class Comment(BaseModel):
         related_name="podcast_comments",
         verbose_name=_("Owner"),
     )
-    podcast = models.ForeignKey(Podcast, on_delete=models.CASCADE, related_name="comments", verbose_name=_("Podcast"))
+    podcast = models.ForeignKey(
+        Podcast,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name=_("Podcast"),
+    )
     parent = models.ForeignKey(
-        to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name="replies", verbose_name=_("Parent")
+        to="self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="replies",
+        verbose_name=_("Parent"),
     )
 
     class Meta:
@@ -116,7 +144,12 @@ class CommentComplaint(BaseModel):
         related_name="podcast_comment_complaints",
         verbose_name=_("Owner"),
     )
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="complaints", verbose_name=_("Comment"))
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="complaints",
+        verbose_name=_("Comment"),
+    )
 
     class Meta:
         verbose_name = _("Podcast Comment Complaint")
@@ -128,13 +161,22 @@ class CommentComplaint(BaseModel):
 
 class ProfilePodcastCommentLike(BaseModel):
     status = models.CharField(
-        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
+        _("Status"),
+        max_length=1,
+        choices=LikeStatusChoices.choices,
+        default=LikeStatusChoices.NEUTRAL,
     )
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="podcast_comment_likes", verbose_name=_("Profile")
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="podcast_comment_likes",
+        verbose_name=_("Profile"),
     )
     comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Comment")
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="profile_likes",
+        verbose_name=_("Comment"),
     )
 
     class Meta:

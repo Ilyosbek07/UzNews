@@ -6,50 +6,65 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='facebook',
-            field=models.URLField(blank=True, null=True, verbose_name='Facebook'),
+            model_name="profile",
+            name="facebook",
+            field=models.URLField(blank=True, null=True, verbose_name="Facebook"),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='image',
-            field=models.ImageField(unique='user_image/', upload_to='', verbose_name='Profile Image'),
+            model_name="profile",
+            name="image",
+            field=models.ImageField(
+                unique="user_image/", upload_to="", verbose_name="Profile Image"
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='info',
-            field=models.TextField(blank=True, null=True, verbose_name='Info'),
+            model_name="profile",
+            name="info",
+            field=models.TextField(blank=True, null=True, verbose_name="Info"),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='instagram',
-            field=models.URLField(blank=True, null=True, verbose_name='Instagram'),
+            model_name="profile",
+            name="instagram",
+            field=models.URLField(blank=True, null=True, verbose_name="Instagram"),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='role',
-            field=models.CharField(choices=[('simple user', 'Simple User'), ('author', 'Author'), ('moderator', 'Moderator')], default='simple user', max_length=55, verbose_name='Role'),
+            model_name="profile",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("simple user", "Simple User"),
+                    ("author", "Author"),
+                    ("moderator", "Moderator"),
+                ],
+                default="simple user",
+                max_length=55,
+                verbose_name="Role",
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='telegram',
-            field=models.URLField(blank=True, null=True, verbose_name='Telegram'),
+            model_name="profile",
+            name="telegram",
+            field=models.URLField(blank=True, null=True, verbose_name="Telegram"),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='twitter',
-            field=models.URLField(blank=True, null=True, verbose_name='Twitter'),
+            model_name="profile",
+            name="twitter",
+            field=models.URLField(blank=True, null=True, verbose_name="Twitter"),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL, verbose_name='User'),
+            model_name="profile",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="profile",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="User",
+            ),
         ),
     ]

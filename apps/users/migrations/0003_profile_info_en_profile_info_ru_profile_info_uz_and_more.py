@@ -4,40 +4,69 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_alter_profile_facebook_alter_profile_image_and_more'),
+        ("users", "0002_alter_profile_facebook_alter_profile_image_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='info_en',
-            field=models.TextField(blank=True, null=True, verbose_name='Info'),
+            model_name="profile",
+            name="info_en",
+            field=models.TextField(blank=True, null=True, verbose_name="Info"),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='info_ru',
-            field=models.TextField(blank=True, null=True, verbose_name='Info'),
+            model_name="profile",
+            name="info_ru",
+            field=models.TextField(blank=True, null=True, verbose_name="Info"),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='info_uz',
-            field=models.TextField(blank=True, null=True, verbose_name='Info'),
+            model_name="profile",
+            name="info_uz",
+            field=models.TextField(blank=True, null=True, verbose_name="Info"),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='role_en',
-            field=models.CharField(choices=[('simple user', 'Simple User'), ('author', 'Author'), ('moderator', 'Moderator')], default='simple user', max_length=55, null=True, verbose_name='Role'),
+            model_name="profile",
+            name="role_en",
+            field=models.CharField(
+                choices=[
+                    ("simple user", "Simple User"),
+                    ("author", "Author"),
+                    ("moderator", "Moderator"),
+                ],
+                default="simple user",
+                max_length=55,
+                null=True,
+                verbose_name="Role",
+            ),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='role_ru',
-            field=models.CharField(choices=[('simple user', 'Simple User'), ('author', 'Author'), ('moderator', 'Moderator')], default='simple user', max_length=55, null=True, verbose_name='Role'),
+            model_name="profile",
+            name="role_ru",
+            field=models.CharField(
+                choices=[
+                    ("simple user", "Simple User"),
+                    ("author", "Author"),
+                    ("moderator", "Moderator"),
+                ],
+                default="simple user",
+                max_length=55,
+                null=True,
+                verbose_name="Role",
+            ),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='role_uz',
-            field=models.CharField(choices=[('simple user', 'Simple User'), ('author', 'Author'), ('moderator', 'Moderator')], default='simple user', max_length=55, null=True, verbose_name='Role'),
+            model_name="profile",
+            name="role_uz",
+            field=models.CharField(
+                choices=[
+                    ("simple user", "Simple User"),
+                    ("author", "Author"),
+                    ("moderator", "Moderator"),
+                ],
+                default="simple user",
+                max_length=55,
+                null=True,
+                verbose_name="Role",
+            ),
         ),
     ]

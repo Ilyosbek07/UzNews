@@ -1,6 +1,8 @@
 from django.urls import path
 
-from apps.interview.views import InterviewListAPIView, InterviewRetrieveAPIView, InterviewTagListAPIView
+from apps.interview.views import (InterviewListAPIView,
+                                  InterviewRetrieveAPIView,
+                                  InterviewTagListAPIView)
 
 urlpatterns = [
     path("tag/list/", InterviewTagListAPIView.as_view(), name="interview-list"),
