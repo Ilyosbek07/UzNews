@@ -9,7 +9,7 @@ class NewsBase(models.Model):
     title = models.CharField(max_length=255, verbose_name=_("Title"))
     slug = models.SlugField(default="", null=False, verbose_name=_('Slug'))
     author = None
-    desc = RichTextField(verbose_name=_("Description"),default="")
+    desc = RichTextField(verbose_name=_("Description"), default="")
 
     class Meta:
         abstract = True
@@ -20,7 +20,10 @@ class CommentBase(models.Model):
     text = models.TextField(verbose_name=_("Text"))
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     parent = models.ForeignKey(
-        "self", verbose_name=_("Parent"), on_delete=models.CASCADE
+        "self",
+        verbose_name=_("Parent"),
+        on_delete=models.CASCADE,
+        related_name="%(app_label)s_%(class)s_related"
     )
     image = models.ImageField(verbose_name=_("Image"))
 

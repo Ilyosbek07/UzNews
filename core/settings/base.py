@@ -59,7 +59,9 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "modeltranslation",
     "ckeditor",
-    "ckeditor_uploader"
+    "ckeditor_uploader",
+    'django_filters',
+
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
