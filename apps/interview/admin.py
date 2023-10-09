@@ -10,6 +10,7 @@ class InterviewAdmin(admin.ModelAdmin):
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
 
+
 @admin.register(InterviewTag)
 class InterviewTagAdmin(admin.ModelAdmin):
     list_display = ("id", "name")

@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interview', '0009_alter_interview_is_main'),
+        ("interview", "0009_alter_interview_is_main"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='interview',
-            name='status',
-            field=models.CharField(choices=[('published', 'Published'), ('in_moderation', 'In Moderation'), ('draft', 'Draft')], default='draft', max_length=55, verbose_name='Status'),
+            model_name="interview",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("published", "Published"),
+                    ("in_moderation", "In Moderation"),
+                    ("draft", "Draft"),
+                ],
+                default="draft",
+                max_length=55,
+                verbose_name="Status",
+            ),
         ),
     ]

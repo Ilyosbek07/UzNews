@@ -1,5 +1,6 @@
-from rest_framework import filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, generics
+
 from apps.interview.models import Interview, InterviewTag
 from apps.interview.serializers import (InterviewSerializer,
                                         InterviewTagSerializer)
@@ -21,6 +22,7 @@ class InterviewListAPIView(generics.ListAPIView):
 class InterviewRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
+
 
 # class RelatedInterviewListAPIView(APIView):
 #     def get(self):

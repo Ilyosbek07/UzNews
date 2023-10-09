@@ -3,13 +3,16 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
-from apps.news.models import News
-from apps.news.serializers import NewsSerializer
+from apps.news.choices import NewsTypeChoices
+from apps.news.filters import NewsFilter
+from apps.news.models import News, NewsCategory
+from apps.news.serializers import (NewsCategorySerializer, NewsSerializer,
+                                   TimeLineNewsSerializer)
 
 
 class MainNewsViewSet(ListAPIView):
     serializer_class = NewsSerializer
-    model = News.objects.all()
+    queryset = News.objects.all()
 
     def list(self, request, *args, **kwargs):
         prime_news = News.objects.filter(position="prime", status="published").order_by("-created_at")[:3]
@@ -27,7 +30,7 @@ class MainNewsViewSet(ListAPIView):
 
 class PopularAndDiscussedNewsViewSet(ListAPIView):
     serializer_class = NewsSerializer
-    model = News.objects.all()
+    queryset = News.objects.all()
 
     def list(self, request, *args, **kwargs):
         popular_news = (
@@ -49,3 +52,19 @@ class PopularAndDiscussedNewsViewSet(ListAPIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+class AllNewsViewSet(ListAPIView):
+    serializer_class = NewsSerializer
+    queryset = News.objects.filter(status="published", type=NewsTypeChoices.NEWS)
+    filterset_class = NewsFilter
+
+
+class TimeLineNewsListViewSet(ListAPIView):
+    serializer_class = TimeLineNewsSerializer
+    queryset = News.objects.all().order_by("-created_at")
+
+
+class NewsCategoryListViewSet(ListAPIView):
+    serializer_class = NewsCategorySerializer
+    queryset = NewsCategory.objects.all()

@@ -4,30 +4,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interview', '0004_alter_interviewlike_options_interviewlike_content_and_more'),
+        (
+            "interview",
+            "0004_alter_interviewlike_options_interviewlike_content_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='interview',
-            name='is_main',
-            field=models.BooleanField(default=False, verbose_name='Is Main'),
+            model_name="interview",
+            name="is_main",
+            field=models.BooleanField(default=False, verbose_name="Is Main"),
         ),
         migrations.AlterField(
-            model_name='interview',
-            name='subtitle',
-            field=models.CharField(max_length=255, verbose_name='Subtitle'),
+            model_name="interview",
+            name="subtitle",
+            field=models.CharField(max_length=255, verbose_name="Subtitle"),
         ),
         migrations.AlterField(
-            model_name='interview',
-            name='tag',
-            field=models.ManyToManyField(related_name='interview_tag', to='interview.interviewtag', verbose_name='Tag'),
+            model_name="interview",
+            name="tag",
+            field=models.ManyToManyField(
+                related_name="interview_tag",
+                to="interview.interviewtag",
+                verbose_name="Tag",
+            ),
         ),
         migrations.AlterField(
-            model_name='interviewtag',
-            name='name',
-            field=models.CharField(max_length=255, verbose_name='Name'),
+            model_name="interviewtag",
+            name="name",
+            field=models.CharField(max_length=255, verbose_name="Name"),
         ),
     ]

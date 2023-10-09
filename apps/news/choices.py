@@ -16,3 +16,8 @@ class NewsStatusChoices(models.TextChoices):
     DRAFT = "draft", "Draft"
     IN_MODERATION = "in moderation", "In moderation"
     PUBLISHED = "published", "Published"
+
+
+class NewsTypeChoices(models.TextChoices):
+    ARTICLE = "article", "Article"
+    NEWS = "news", "News"

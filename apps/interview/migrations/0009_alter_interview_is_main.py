@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interview', '0008_alter_interview_desc_alter_interview_desc_en_and_more'),
+        ("interview", "0008_alter_interview_desc_alter_interview_desc_en_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='interview',
-            name='is_main',
-            field=models.BooleanField(default=False, verbose_name='Is Main'),
+            model_name="interview",
+            name="is_main",
+            field=models.BooleanField(default=False, verbose_name="Is Main"),
         ),
     ]
