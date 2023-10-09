@@ -79,3 +79,16 @@ class CommentsListSerializer(serializers.ModelSerializer):
     def get_reply(self, obj):
         serializer = CommentsListSerializer(instance=obj.comment.all(), many=True)
         return serializer.data
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    user = CommentUserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = (
+            "text",
+            "user",
+            "image",
+            "parent",
+        )
