@@ -27,12 +27,11 @@ class NewsBase(models.Model):
         if self.created_at.date() == timezone.now().date():
             time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
             if int(time_difference_in_seconds) > 60:
-                data['minute'] = int((int(time_difference_in_seconds) / 60))
-            elif 86400 >= int(
-                    time_difference_in_seconds) >= 3600:
-                data['hour'] = int(time_difference_in_seconds / 3600)
+                data["minute"] = int((int(time_difference_in_seconds) / 60))
+            elif 86400 >= int(time_difference_in_seconds) >= 3600:
+                data["hour"] = int(time_difference_in_seconds / 3600)
             else:
-                data['today'] = self.created_at.strftime("%H:%M")
+                data["today"] = self.created_at.strftime("%H:%M")
                 return data or self.created_at
 
     class Meta:
@@ -44,7 +43,10 @@ class CommentBase(models.Model):
     text = models.TextField(verbose_name=_("Text"))
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     parent = models.ForeignKey(
-        "self", verbose_name=_("Parent"), on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_related"
+        "self",
+        verbose_name=_("Parent"),
+        on_delete=models.CASCADE,
+        related_name="%(app_label)s_%(class)s_related",
     )
     image = models.ImageField(verbose_name=_("Image"))
 

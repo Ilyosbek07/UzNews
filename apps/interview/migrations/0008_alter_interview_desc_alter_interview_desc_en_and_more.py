@@ -5,30 +5,35 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interview', '0007_interview_style_type_alter_interview_is_main_and_more'),
+        ("interview", "0007_interview_style_type_alter_interview_is_main_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='interview',
-            name='desc',
-            field=ckeditor.fields.RichTextField(default='', verbose_name='Description'),
+            model_name="interview",
+            name="desc",
+            field=ckeditor.fields.RichTextField(default="", verbose_name="Description"),
         ),
         migrations.AlterField(
-            model_name='interview',
-            name='desc_en',
-            field=ckeditor.fields.RichTextField(default='', null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_en",
+            field=ckeditor.fields.RichTextField(
+                default="", null=True, verbose_name="Description"
+            ),
         ),
         migrations.AlterField(
-            model_name='interview',
-            name='desc_ru',
-            field=ckeditor.fields.RichTextField(default='', null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_ru",
+            field=ckeditor.fields.RichTextField(
+                default="", null=True, verbose_name="Description"
+            ),
         ),
         migrations.AlterField(
-            model_name='interview',
-            name='desc_uz',
-            field=ckeditor.fields.RichTextField(default='', null=True, verbose_name='Description'),
+            model_name="interview",
+            name="desc_uz",
+            field=ckeditor.fields.RichTextField(
+                default="", null=True, verbose_name="Description"
+            ),
         ),
     ]

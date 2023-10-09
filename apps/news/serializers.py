@@ -1,14 +1,7 @@
 from rest_framework import serializers
-from .models import (
-    NewsTag,
-    NewsCategory,
-    News,
-    NewsLike,
-    NewsComment,
-    NewsCommentReport,
-    NewsView,
-    BreakingNews,
-)
+
+from .models import (BreakingNews, News, NewsCategory, NewsComment,
+                     NewsCommentReport, NewsLike, NewsTag, NewsView)
 
 
 class NewsTagSerializer(serializers.ModelSerializer):
@@ -24,6 +17,8 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    category = NewsCategorySerializer()
+    tag = NewsTagSerializer(many=True)
 
     class Meta:
         model = News
@@ -34,17 +29,22 @@ class NewsSerializer(serializers.ModelSerializer):
             "category",
             "position",
             "status",
-            "type",
             "title",
+            "style",
             "slug",
             "author",
             "desc",
+            "date_time_in_word",
             "view_count",
             "created_at",
             "updated_at",
         )
 
 
+class TimeLineNewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ("id", "title", "created_at")
 
 
 class NewsLikeSerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.interview.models import Interview, InterviewTag, InterviewLike
+from apps.interview.models import Interview, InterviewLike, InterviewTag
 
 
 class InterviewLikeSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class InterviewSerializer(serializers.ModelSerializer):
             "tag",
             "date_time_in_word",
             "created_at",
-            "updated_at"
+            "updated_at",
         )
 
 
@@ -52,5 +52,5 @@ class InterviewDetailSerializer(serializers.ModelSerializer):
             "tag",
             "date_time_in_word",
             "related_interviews",
-            "created_at"
+            "created_at",
         )
