@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel, LikeBase, NewsBase
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
-from apps.users.models import Profile
+from apps.users.models import Profile, User
 
 
 class InterviewTag(BaseModel):
@@ -19,6 +19,8 @@ class InterviewTag(BaseModel):
 
 
 class Interview(BaseModel, NewsBase):
+    like_count = models.PositiveIntegerField(_("Like count"), default=0)
+    dislike_count = models.PositiveSmallIntegerField(_("Dislike count"), default=0)
     style_type = models.CharField(
         max_length=55,
         choices=InterviewStyleStatusChoices.choices,
@@ -50,8 +52,8 @@ class Interview(BaseModel, NewsBase):
 
 
 class InterviewLike(LikeBase, BaseModel):
-    profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="interview_user_like", verbose_name=_("Profile")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="interview_user_like", verbose_name=_("User")
     )
     content = models.ForeignKey(
         Interview, on_delete=models.CASCADE, related_name="interview_like", verbose_name=_("Interview")
@@ -60,3 +62,30 @@ class InterviewLike(LikeBase, BaseModel):
     class Meta:
         verbose_name = _("User Interview Like")
         verbose_name_plural = _("User Interview Likes")
+
+
+class InterviewView(BaseModel):
+    interview = models.ForeignKey(
+        Interview,
+        verbose_name=_("Interview"),
+        on_delete=models.CASCADE,
+        related_name="interview_view",
+    )
+    user = models.ForeignKey(
+        User,
+        verbose_name=_("User"),
+        on_delete=models.CASCADE,
+        related_name="user_views",
+        null=True,
+        blank=True,
+    )
+    device_id = models.CharField(
+        verbose_name=_("Identified device"),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Interview View")
+        verbose_name_plural = _("Interview Views")

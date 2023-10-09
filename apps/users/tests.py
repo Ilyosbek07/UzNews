@@ -13,7 +13,6 @@ class UserAPITestCase(APITestCase):
         self.user = User.objects.create_user(phone_number="+998644321232", password="my_pass123")
         self.profile = Profile.objects.create(
             user=self.user,
-            surname="Karshiboyev",
             info="Info",
             role=Role.simple_user,
         )

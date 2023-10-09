@@ -24,4 +24,33 @@ class InterviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interview
-        fields = ("id", "title", "subtitle", "status", "video_url", "tag","date_time_in_word", "created_at", "updated_at")
+        fields = (
+            "id",
+            "title",
+            "subtitle",
+            "status",
+            "video_url",
+            "tag",
+            "date_time_in_word",
+            "created_at",
+            "updated_at"
+        )
+
+
+class InterviewDetailSerializer(serializers.ModelSerializer):
+    tag = InterviewTagSerializer(many=True)
+    related_interviews = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Interview
+        fields = (
+            "id",
+            "title",
+            "subtitle",
+            "status",
+            "video_url",
+            "tag",
+            "date_time_in_word",
+            "related_interviews",
+            "created_at"
+        )
