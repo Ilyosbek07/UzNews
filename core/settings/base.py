@@ -51,6 +51,8 @@ CUSTOM_APPS = [
     "apps.users",
     "apps.podcast",
     "apps.news",
+    "apps.photoreport",
+    "apps.review",
 ]
 
 THIRD_PARTY_APPS = [
@@ -60,8 +62,7 @@ THIRD_PARTY_APPS = [
     "modeltranslation",
     "ckeditor",
     "ckeditor_uploader",
-    'django_filters',
-
+    "django_filters",
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
@@ -160,7 +161,7 @@ MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 LOCALE_PATHS = [
     BASE_DIR / "locale/",
 ]
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
