@@ -7,10 +7,11 @@ class InterviewLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = InterviewLike
         fields = (
-            '',
-            '',
-            '',
+            "",
+            "",
+            "",
         )
+
 
 class InterviewTagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +24,4 @@ class InterviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interview
-        fields = ("id", "tag", "subtitle", "video_url")
+        fields = ("id", "title", "subtitle", "status", "video_url", "tag","date_time_in_word", "created_at", "updated_at")
