@@ -2,11 +2,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from apps.common.models import BaseModel
 from apps.users.models import Profile
 
 from .choices import LikeStatusChoices, PodcastStatusChoices
+
 
 
 class Tag(BaseModel):
@@ -31,7 +31,6 @@ class Category(BaseModel):
 
     def __str__(self):
         return self.name
-
 
 class Podcast(BaseModel):
     title = models.CharField(_("Title"), max_length=255)
