@@ -33,6 +33,7 @@ class PhotoReport(NewsBase, BaseModel):
     author = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, verbose_name=_("Author"))
     liked = models.IntegerField(default=0, verbose_name=_("Liked"))
     views = models.IntegerField(default=0, verbose_name=_("Views"))
+    is_prime = models.BooleanField(default=False, verbose_name=_("Is prime"))
 
     def __str__(self):
         return self.title

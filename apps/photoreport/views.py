@@ -1,14 +1,23 @@
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.photoreport.models import Comment, CommentLike, PhotoReport
+from apps.photoreport.models import (Comment, CommentLike, PhotoReport,
+                                     PhotoReportLiked, PhotoReportView)
 from apps.photoreport.serializers import (CommentCreateSerializer,
                                           CommentsListSerializer,
                                           PhotoReportDetailSerializer,
-                                          PhotoReportListSerializer)
+                                          PhotoReportListSerializer,
+                                          PrimePhotoReportSerializer)
+
+
+class PrimePhotoReportAPIView(generics.ListAPIView):
+    serializer_class = PrimePhotoReportSerializer
+
+    def get_queryset(self):
+        return PhotoReport.objects.filter(is_prime=True)
 
 
 class PhotoReportListAPIView(generics.ListAPIView):
@@ -16,10 +25,39 @@ class PhotoReportListAPIView(generics.ListAPIView):
     serializer_class = PhotoReportListSerializer
 
 
-class PhotoReportDetailAPIView(generics.RetrieveAPIView):
-    queryset = PhotoReport.objects.all()
-    serializer_class = PhotoReportDetailSerializer
-    lookup_field = "slug"
+class PhotoReportDetailAPIView(APIView):
+    def get(self, request, slug):
+        photo_report = get_object_or_404(PhotoReport, slug=slug)
+        if request.user.is_authenticated:
+            PhotoReportView.objects.get_or_create(user=request.user, photo_report=photo_report)
+
+        serializer = PhotoReportDetailSerializer(photo_report)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PhotoReportLikeAPIView(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        photo_report = get_object_or_404(PhotoReport, slug=self.kwargs["slug"])
+        if self.request.user.is_authenticated:
+            try:
+                PhotoReportLiked.objects.create(photo_report=photo_report, user=self.request.user)
+                return Response({"message": "successfully created. "})
+            except Exception as e:
+                return Response({"error": f"{e}"})
+
+
+class PhotoReportDislikeAPIView(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        photo_report = get_object_or_404(PhotoReport, slug=self.kwargs["slug"])
+        if self.request.user.is_authenticated:
+            try:
+                liked_record = PhotoReportLiked.objects.get(photo_report=photo_report, user=self.request.user)
+                liked_record.delete()
+                photo_report.liked -= 1
+                photo_report.save()
+            except PhotoReportLiked.DoesNotExist:
+                return Response({"message": "Error doesn't exists. "})
+        return Response({"message": "successfully deleted. "})
 
 
 class CommentsListAPIView(generics.ListAPIView):
@@ -56,7 +94,7 @@ class CreateLikeCommentAPIView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, id=self.kwargs["id"])
         if request.user.is_authenticated:
-            CommentLike.objects.update_or_create(user=request.user, comment=comment)
+            CommentLike.objects.get_or_create(user=request.user, comment=comment)
             return Response({"message": "successfully created. "})
         return Response({"message": "error"})
 

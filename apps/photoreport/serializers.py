@@ -10,6 +10,18 @@ class GalleryImageSerializer(serializers.ModelSerializer):
         fields = ("id", "image", "order")
 
 
+class PrimePhotoReportSerializer(serializers.ModelSerializer):
+    count_images = serializers.SerializerMethodField()
+    gallery_image = GalleryImageSerializer(many=True)
+
+    class Meta:
+        model = PhotoReport
+        fields = ("id", "slug", "title", "gallery_image", "count_images")
+
+    def get_count_images(self, obj):
+        return obj.gallery_image.count()
+
+
 class PhotoReportListSerializer(serializers.ModelSerializer):
     count_images = serializers.SerializerMethodField()
     main_image = serializers.SerializerMethodField()
