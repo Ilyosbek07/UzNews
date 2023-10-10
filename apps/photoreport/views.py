@@ -35,7 +35,7 @@ class PhotoReportDetailAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class PhotoReportLikeAPIView(generics.CreateAPIView):
+class PhotoReportLikeAPIView(APIView):
     def post(self, request, *args, **kwargs):
         photo_report = get_object_or_404(PhotoReport, slug=self.kwargs["slug"])
         if self.request.user.is_authenticated:
@@ -46,7 +46,7 @@ class PhotoReportLikeAPIView(generics.CreateAPIView):
                 return Response({"error": f"{e}"})
 
 
-class PhotoReportDislikeAPIView(generics.CreateAPIView):
+class PhotoReportDislikeAPIView(APIView):
     def post(self, request, *args, **kwargs):
         photo_report = get_object_or_404(PhotoReport, slug=self.kwargs["slug"])
         if self.request.user.is_authenticated:
@@ -90,7 +90,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
 
-class CreateLikeCommentAPIView(generics.CreateAPIView):
+class CreateLikeCommentAPIView(APIView):
     def post(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, id=self.kwargs["id"])
         if request.user.is_authenticated:
@@ -99,7 +99,7 @@ class CreateLikeCommentAPIView(generics.CreateAPIView):
         return Response({"message": "error"})
 
 
-class CreateDislikeCommentAPIView(generics.CreateAPIView):
+class CreateDislikeCommentAPIView(APIView):
     def post(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, id=self.kwargs["id"])
         if request.user.is_authenticated:
