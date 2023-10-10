@@ -1,16 +1,13 @@
 from rest_framework import serializers
 
-from apps.interview.models import Interview, InterviewTag, InterviewView
+from apps.common.serializers import TagSerializer
+from apps.interview.models import Interview, InterviewView
 
 
-class InterviewTagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = InterviewTag
-        fields = ("name",)
 
 
 class InterviewSerializer(serializers.ModelSerializer):
-    tag = InterviewTagSerializer(many=True)
+    tag = TagSerializer(many=True)
 
     class Meta:
         model = Interview
@@ -27,8 +24,20 @@ class InterviewSerializer(serializers.ModelSerializer):
         )
 
 
+class InterviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Interview
+        fields = (
+            "title",
+            "subtitle",
+            "status",
+            "video_url",
+            "tag",
+        )
+
+
 class InterviewDetailSerializer(serializers.ModelSerializer):
-    tag = InterviewTagSerializer(many=True)
+    tag = TagSerializer(many=True)
     view_count = serializers.SerializerMethodField()
 
     class Meta:

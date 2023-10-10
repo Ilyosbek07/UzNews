@@ -111,3 +111,14 @@ class SocialMedia(models.Model):
     class Meta:
         verbose_name = _("Social Media")
         verbose_name_plural = _("Social Media")
+
+
+class Tag(BaseModel):
+    name = models.CharField(_("Name"), max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"

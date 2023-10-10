@@ -2,20 +2,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel, LikeBase, NewsBase
+from apps.common.models import BaseModel, LikeBase, NewsBase, Tag
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
 from apps.users.models import Profile, User
-
-
-class InterviewTag(BaseModel):
-    name = models.CharField(_("Name"), max_length=255)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Interview Tag"
-        verbose_name_plural = "Interview Tags"
 
 
 class Interview(BaseModel, NewsBase):
@@ -30,7 +19,7 @@ class Interview(BaseModel, NewsBase):
     status = models.CharField(
         max_length=55, choices=StatusChoices.choices, verbose_name=_("Status"), default=StatusChoices.DRAFT
     )
-    tag = models.ManyToManyField(InterviewTag, related_name="interview_tag", verbose_name=_("Tag"))
+    tag = models.ManyToManyField(Tag, related_name="interview_tag", verbose_name=_("Tag"))
     subtitle = models.CharField(verbose_name=_("Subtitle"), max_length=255)
     video_url = models.URLField(verbose_name=_("Video Url"))
     is_main = models.BooleanField(verbose_name=_("Is Main"), default=False)

@@ -1,7 +1,11 @@
+from rest_framework.parsers import MultiPartParser
+
+from apps.users.choices import Role
 from apps.users.models import Profile, User
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
-from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer
+from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer, ProfileUpdateSerializer, \
+    UserUpdateSerializer
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -9,19 +13,20 @@ class RegistrationAPIView(generics.CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 
-class UserProfileUpdateView(generics.UpdateAPIView):
+class AuthorProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.filter(role=Role.author).order_by('-post_view_count')
     serializer_class = UserProfileSerializer
+
+
+class UserUpdateView(generics.UpdateAPIView):
+    serializer_class = UserUpdateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def put(self, request, *args, **kwargs):
-        profile = Profile.objects.get(user=self.request.user)
-        serializer = self.serializer_class(profile, data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ProfileUpdateView(generics.UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileUpdateSerializer
+    parser_classes = (MultiPartParser,)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
@@ -37,31 +42,3 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         serializer = self.serializer_class(profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# class NotificationsAPIView(generics.ListAPIView):
-#     serializer_class = NotificationSerializer
-#     queryset = Notification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#
-# class ReadDetailNotificationAPIView(generics.RetrieveAPIView):
-#     serializer_class = NotificationSerializer
-#     queryset = Notification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get(self, request, *args, **kwargs):
-#         self.get_or_create_read_notification()
-#         return self.retrieve(request, *args, **kwargs)
-#
-#     def get_or_create_read_notification(self):
-#         ReadNotification.objects.get_or_create(user=self.request.user, notification=self.get_object())
-#
-#
-# class ReadNotificationsAPIView(generics.ListAPIView):
-#     serializer_class = ReadNotificationSerializer
-#     queryset = ReadNotification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get_queryset(self):
-#         return self.queryset.filter(user=self.request.user)

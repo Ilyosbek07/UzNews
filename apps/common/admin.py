@@ -1,5 +1,11 @@
 from django.contrib import admin
-from apps.common.models import Advertising, SocialMedia
+from apps.common.models import Advertising, SocialMedia, Tag
+
+
+@admin.register(Tag)
+class InterviewTagAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
 
 
 @admin.register(Advertising)
