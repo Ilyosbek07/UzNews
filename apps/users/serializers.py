@@ -2,6 +2,8 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.news.models import News
+from apps.news.serializers import NewsSerializer
 from apps.users.models import Profile, User
 
 
@@ -13,16 +15,37 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    author_set = NewsSerializer(many=True)
 
     class Meta:
         model = Profile
         fields = (
             "id",
             "user",
-            "surname",
             "image",
             "info",
             "role",
+            "post_view_count",
+            "telegram",
+            "instagram",
+            "facebook",
+            "twitter",
+            "author_set",
+        )
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'username']
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            "image",
+            "info",
             "telegram",
             "instagram",
             "facebook",

@@ -52,10 +52,18 @@ CUSTOM_APPS = [
     "apps.podcast",
     "apps.news",
     "apps.photoreport",
-    "apps.review"
+    "apps.review",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation", "ckeditor", "ckeditor_uploader"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_yasg",
+    "corsheaders",
+    "modeltranslation",
+    "ckeditor",
+    "ckeditor_uploader",
+    "django_filters",
+]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -158,7 +166,7 @@ TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

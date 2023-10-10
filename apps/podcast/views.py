@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 
-from .utils import perform_liked, perform_disliked
 from .models import Podcast, UserPodcastPreference
+from .utils import perform_disliked, perform_liked
+
 
 class PodcastLikedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -31,4 +32,3 @@ class PodcastDislikedView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         perform_disliked(profile, content, UserPodcastPreference)
         return Response(status=status.HTTP_200_OK)
-    

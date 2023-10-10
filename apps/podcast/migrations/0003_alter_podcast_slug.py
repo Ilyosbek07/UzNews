@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('podcast', '0002_alter_podcast_slug'),
+        ("podcast", "0002_alter_podcast_slug"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='podcast',
-            name='slug',
-            field=models.SlugField(default='', verbose_name='Slug'),
+            model_name="podcast",
+            name="slug",
+            field=models.SlugField(default="", verbose_name="Slug"),
         ),
     ]

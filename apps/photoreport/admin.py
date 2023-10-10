@@ -18,7 +18,6 @@ class PhotoReportAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "subtitle", "author", "status", "liked", "views")
     list_filter = ("status", "liked", "views", "author", "tag")
     search_fields = ("title", "subtitle", "author__username")
-    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(PhotoReportLiked)

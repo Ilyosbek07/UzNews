@@ -36,6 +36,8 @@ class User(AbstractUser, BaseModel):
         max_length=16,
         unique=True,
     )
+    first_name = models.CharField(_("first name"), max_length=150, blank=True)
+    last_name = models.CharField(_("last name"), max_length=150, blank=True)
 
     username = models.CharField(verbose_name=_("username"), max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField(verbose_name=_("Email"), null=True, blank=True)
@@ -61,10 +63,10 @@ class User(AbstractUser, BaseModel):
 
 class Profile(BaseModel):
     user = models.ForeignKey(User, related_name="profile", verbose_name=_("User"), on_delete=models.CASCADE)
-    surname = models.CharField(max_length=255, verbose_name=_("Surname"))
-    image = models.ImageField(verbose_name=_("Profile Image"), unique="user_image/")
+    image = models.ImageField(verbose_name=_("Profile Image"), upload_to="user_image/")
     info = models.TextField(verbose_name=_("Info"), null=True, blank=True)
     role = models.CharField(_("Role"), max_length=55, choices=Role.choices, default=Role.simple_user)
+    post_view_count = models.BigIntegerField(verbose_name=_('Post View Count'),null=True,blank=True)
     telegram = models.URLField(verbose_name=_("Telegram"), null=True, blank=True)
     instagram = models.URLField(verbose_name=_("Instagram"), null=True, blank=True)
     facebook = models.URLField(verbose_name=_("Facebook"), null=True, blank=True)
@@ -75,4 +77,4 @@ class Profile(BaseModel):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return self.surname
+        return f'User Full Name - {self.user.first_name} {self.user.last_name}'
