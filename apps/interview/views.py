@@ -3,8 +3,7 @@ from rest_framework import filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from apps.interview.models import Interview, InterviewView
-from apps.interview.serializers import (InterviewSerializer,
-                                         InterviewDetailSerializer, InterviewCreateSerializer)
+from apps.interview.serializers import InterviewSerializer, InterviewDetailSerializer, InterviewCreateSerializer
 
 
 class InterviewCreateAPIView(generics.CreateAPIView):

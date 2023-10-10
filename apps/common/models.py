@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.choices import LikeStatusChoices
+from apps.common.choices import LikeStatusChoices, Advertising_choices
 
 
 class BaseModel(models.Model):
@@ -26,7 +26,7 @@ class NewsBase(models.Model):
         data = dict()
         if self.created_at.date() == timezone.now().date():
             time_difference_in_seconds = (
-                timezone.now() - self.created_at).total_seconds()
+                    timezone.now() - self.created_at).total_seconds()
             if 3600 > int(time_difference_in_seconds) > 60:
                 data["minute"] = int((int(time_difference_in_seconds) / 60))
             elif 86400 >= int(time_difference_in_seconds) >= 3600:
@@ -85,13 +85,12 @@ class ContactBase(models.Model):
 
 class Advertising(models.Model):
     file = models.FileField(verbose_name=_("File"))
-    Advertising_choices = [
-        ("banner", _("Banner")),
-        ("banner2", _("Banner 2")),
-        ("pr_article", _("Pr Article")),
-        ("full_screen", _("Full Screen")),
-    ]
-    type = models.CharField(max_length=55, choices=Advertising_choices, verbose_name=_("Type"))
+    type = models.CharField(
+        max_length=55,
+        choices=Advertising_choices.choices,
+        default=Advertising_choices.banner,
+        verbose_name=_("Type")
+    )
 
     def __str__(self):
         return self.type

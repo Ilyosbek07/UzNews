@@ -18,3 +18,9 @@ class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = ("id", "logo", "url", "number", "desc")
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = None
+        fields = ("text", "is_active", "image")

@@ -7,7 +7,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ("common", "0002_tag"),
         ("interview", "0014_comment_delete_interviewlike"),
-    ]
 
     operations = [
         migrations.DeleteModel(
