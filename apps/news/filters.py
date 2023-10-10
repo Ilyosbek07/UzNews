@@ -44,3 +44,11 @@ class NewsFilter(django_filters.FilterSet):
     class Meta:
         model = News
         fields = []
+
+
+class ArticleFilter(django_filters.FilterSet):
+    author = django_filters.NumberFilter(field_name="author__id")
+
+    class Meta:
+        model = News
+        fields = []

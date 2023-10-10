@@ -47,6 +47,8 @@ class CommentBase(models.Model):
         verbose_name=_("Parent"),
         on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_related",
+        blank=True,
+        null=True,
     )
     image = models.ImageField(verbose_name=_("Image"))
 

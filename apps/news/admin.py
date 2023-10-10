@@ -17,8 +17,8 @@ class NewsCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ("title", "category", "status")
-    list_filter = ("status",)
+    list_display = ("title", "category", "status", "type")
+    list_filter = ("status", "type")
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
 

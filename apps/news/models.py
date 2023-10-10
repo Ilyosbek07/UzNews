@@ -12,7 +12,7 @@ from apps.users.models import User
 
 
 class NewsTag(models.Model):
-    name = models.CharField(_("name of tag"), max_length=255)
+    name = models.CharField(_("name of tag"))
 
     def __str__(self):
         return self.name
@@ -29,9 +29,10 @@ class NewsCategory(models.Model):
 
 
 class News(NewsBase, BaseModel):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_to_news")
+    is_verified = models.BooleanField(blank=True)
     cover = models.ImageField(upload_to="news/cover_images/")
-    tag = models.ManyToManyField(NewsTag)
+    tags = models.ManyToManyField(NewsTag, related_name="news_to_tags")
     category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE)
     position = models.CharField(
         _("position of news in main site page"),
@@ -51,7 +52,6 @@ class News(NewsBase, BaseModel):
         choices=NewsStyleChoices.choices,
         default=NewsStyleChoices.STYLE_1,
     )
-
     objects = NewsManager()
 
     class Meta:
@@ -85,7 +85,7 @@ class News(NewsBase, BaseModel):
 
 class NewsLike(LikeBase):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_like_to_news")
 
     def __str__(self):
         return self.news.title
@@ -104,7 +104,7 @@ class NewsCommentReport(ReportBase, BaseModel):
     comment = models.ForeignKey(NewsComment, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}"
 
 
 class NewsCancelReason(models.Model):
