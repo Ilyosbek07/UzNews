@@ -10,6 +10,3 @@ urlpatterns = [
     path("tag/list/", TagListAPIView.as_view(), name="tag_list"),
     path("tag/create/", TagCreateAPIView.as_view(), name="tag_create"),
 ]
-
-
-
