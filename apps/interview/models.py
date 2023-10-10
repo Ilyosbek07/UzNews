@@ -2,14 +2,12 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel, LikeBase, NewsBase, Tag
+from apps.common.models import BaseModel, LikeBase, NewsBase, Tag, CommentBase
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
 from apps.users.models import Profile, User
 
 
 class Interview(BaseModel, NewsBase):
-    like_count = models.PositiveIntegerField(_("Like count"), default=0)
-    dislike_count = models.PositiveSmallIntegerField(_("Dislike count"), default=0)
     style_type = models.CharField(
         max_length=55,
         choices=InterviewStyleStatusChoices.choices,
@@ -94,3 +92,19 @@ class Comment(BaseModel):
     class Meta:
         verbose_name = _("Comment")
         verbose_name_plural = _("Comments")
+
+
+class InterviewLike(LikeBase):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    interview = models.ForeignKey(Interview, on_delete=models.CASCADE, related_name="like_to_interview")
+
+    def __str__(self):
+        return self.interview.title
+
+
+class InterviewComment(CommentBase, BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    interview = models.ForeignKey(Interview, on_delete=models.CASCADE, related_name="comment_to_interview")
+
+    def __str__(self):
+        return self.text

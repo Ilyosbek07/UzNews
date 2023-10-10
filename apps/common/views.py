@@ -16,12 +16,16 @@ class SocialMediaListAPIView(generics.ListAPIView):
     queryset = SocialMedia.objects.all()
     serializer_class = SocialMediaSerializer
 
+
 class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
 class TagCreateAPIView(generics.CreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
 
 @api_view(['GET'])
 def get_exchange_rate(request):
