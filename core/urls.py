@@ -14,6 +14,7 @@ urlpatterns = [
     path("common/", include("apps.common.urls")),
     path("interview/", include("apps.interview.urls")),
     path("photo-report/", include("apps.photoreport.urls")),
+    # path("review/", include("apps.review.urls")),
 ]
 
 urlpatterns += swagger_urlpatterns

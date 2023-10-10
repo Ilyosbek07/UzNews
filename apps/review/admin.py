@@ -20,6 +20,7 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("name", "slug")
     verbose_name = "Podcast Category"
     verbose_name_plural = "Podcast Categories"
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Review)
