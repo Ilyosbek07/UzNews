@@ -15,12 +15,9 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(PhotoReport)
 class PhotoReportAdmin(admin.ModelAdmin):
-    list_display = ("title", "subtitle", "author", "status", "liked", "views")
+    list_display = ("id", "title", "subtitle", "author", "status", "liked", "views")
     list_filter = ("status", "liked", "views", "author", "tag")
     search_fields = ("title", "subtitle", "author__username")
-    verbose_name = "Photo Report"
-    verbose_name_plural = "Photo Reports"
-    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(PhotoReportLiked)
@@ -50,7 +47,7 @@ class GalleryImageAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("user", "photo_report", "text", "liked")
+    list_display = ("user", "photo_report", "text", "liked", "parent")
     list_filter = ("user", "photo_report", "liked")
     search_fields = ("user__username", "photo_report__title")
     verbose_name = "Comment"

@@ -23,7 +23,7 @@ class Tag(models.Model):
 
 class PhotoReport(NewsBase, BaseModel):
     subtitle = models.CharField(max_length=255, null=True, verbose_name=_("Subtitle"))
-    tag = models.ManyToManyField("photoreport.Tag", null=True, verbose_name=_("Tags"))
+    tag = models.ManyToManyField("photoreport.Tag", verbose_name=_("Tags"))
     status = models.CharField(
         max_length=16,
         choices=StatusChoices.choices,
@@ -33,6 +33,7 @@ class PhotoReport(NewsBase, BaseModel):
     author = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, verbose_name=_("Author"))
     liked = models.IntegerField(default=0, verbose_name=_("Liked"))
     views = models.IntegerField(default=0, verbose_name=_("Views"))
+    is_prime = models.BooleanField(default=False, verbose_name=_("Is prime"))
 
     def __str__(self):
         return self.title
@@ -132,13 +133,14 @@ class Comment(BaseModel):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name="comment",
         verbose_name=_("Parent Comment"),
     )
     text = models.TextField(null=True, blank=True, verbose_name=_("Text"))
     liked = models.IntegerField(default=0, verbose_name=_("Liked"))
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.photo_report.title}"
+        return self.text
 
     class Meta:
         verbose_name = _("Comment")
