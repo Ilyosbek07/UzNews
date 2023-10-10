@@ -1,11 +1,8 @@
-from django.db.models import Count
 from rest_framework import serializers
-
 from apps.common.choices import LikeStatusChoices
 from apps.news.models import (BreakingNews, News, NewsCategory, NewsComment,
                               NewsCommentReport, NewsLike, NewsTag, NewsView)
 from apps.users.models import Profile
-from apps.users.serializers import UserProfileSerializer
 
 
 class NewsTagSerializer(serializers.ModelSerializer):
@@ -62,6 +59,7 @@ class NewsSerializer(serializers.ModelSerializer):
         return obj.news_comment_to_news.count()
 
     def get_author(self, obj):
+        from apps.users.serializers import UserProfileSerializer
         profile = Profile.objects.get(user=obj.author.id)
         return UserProfileSerializer(profile).data
 
