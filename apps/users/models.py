@@ -76,4 +76,4 @@ class Profile(BaseModel):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return self.surname
+        return f'User Full Name - {self.user.first_name} {self.user.last_name}'

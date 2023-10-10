@@ -7,5 +7,5 @@ from apps.interview.views import (InterviewListAPIView,
 urlpatterns = [
     path("tag/list/", InterviewTagListAPIView.as_view(), name="interview-list"),
     path("list/", InterviewListAPIView.as_view(), name="interview-list"),
-    path("detail/", InterviewRetrieveAPIView.as_view(), name="interview-detail"),
+    path("detail/<int:pk>/", InterviewRetrieveAPIView.as_view(), name="interview-detail"),
 ]

@@ -5,12 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.interview.models import (Interview, InterviewLike, InterviewTag,
+from apps.interview.models import (Interview, InterviewTag,
                                    InterviewView)
 from apps.interview.serializers import (InterviewDetailSerializer,
                                         InterviewSerializer,
                                         InterviewTagSerializer)
-from apps.interview.utils import perform_disliked, perform_liked
 
 
 class InterviewTagListAPIView(generics.ListAPIView):
@@ -62,29 +61,3 @@ class RelatedInterviewsList(generics.ListAPIView):
             return Response(serializer.data)
         except Interview.DoesNotExist:
             return Response({"message": "Interview not found."}, status=404)
-
-
-class InterviewLikedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, pk):
-        profile = self.request.user.profile
-        try:
-            content = Interview.objects.get(pk=pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        perform_liked(profile, content, InterviewLike)
-        return Response(status=status.HTTP_200_OK)
-
-
-class InterviewDislikedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, pk):
-        profile = self.request.user.profile
-        try:
-            content = Interview.objects.get(pk=pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        perform_disliked(profile, content, InterviewLike)
-        return Response(status=status.HTTP_200_OK)

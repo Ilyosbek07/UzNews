@@ -25,14 +25,15 @@ class NewsBase(models.Model):
     def date_time_in_word(self):
         data = dict()
         if self.created_at.date() == timezone.now().date():
-            time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
-            if int(time_difference_in_seconds) > 60:
-                data["minute"] = int((int(time_difference_in_seconds) / 60))
-            elif 86400 >= int(time_difference_in_seconds) >= 3600:
-                data["hour"] = int(time_difference_in_seconds / 3600)
-            else:
-                data["today"] = self.created_at.strftime("%H:%M")
-                return data or self.created_at
+            time_difference_in_seconds = (
+                timezone.now() - self.created_at).total_seconds()
+        if 3600 > int(time_difference_in_seconds) > 60:
+            data["minute"] = int((int(time_difference_in_seconds) / 60))
+        elif 86400 >= int(time_difference_in_seconds) >= 3600:
+            data["hour"] = int(time_difference_in_seconds / 3600)
+        else:
+            data["today"] = self.created_at.strftime("%H:%M")
+        return data or self.created_at
 
     class Meta:
         abstract = True

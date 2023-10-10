@@ -48,17 +48,6 @@ class Interview(BaseModel, NewsBase):
         verbose_name_plural = "Interviews"
 
 
-class InterviewLike(LikeBase, BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interview_user_like", verbose_name=_("User"))
-    content = models.ForeignKey(
-        Interview, on_delete=models.CASCADE, related_name="interview_like", verbose_name=_("Interview")
-    )
-
-    class Meta:
-        verbose_name = _("User Interview Like")
-        verbose_name_plural = _("User Interview Likes")
-
-
 class InterviewView(BaseModel):
     interview = models.ForeignKey(
         Interview,
@@ -84,3 +73,35 @@ class InterviewView(BaseModel):
     class Meta:
         verbose_name = _("Interview View")
         verbose_name_plural = _("Interview Views")
+
+
+class Comment(BaseModel):
+    interview = models.ForeignKey(Interview, on_delete=models.CASCADE, verbose_name=_("Interview"))
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="interview_comment",
+        verbose_name=_("User"),
+    )
+    image = models.ImageField(
+        upload_to="interview/comment_images",
+        blank=True,
+        null=True,
+        verbose_name=_("Image"),
+    )
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("Parent Comment"),
+    )
+    text = models.TextField(null=True, blank=True, verbose_name=_("Text"))
+    liked = models.IntegerField(default=0, verbose_name=_("Liked"))
+
+    def __str__(self):
+        return f"Comment by {self.user.first_name} on {self.interview.title}"
+
+    class Meta:
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")

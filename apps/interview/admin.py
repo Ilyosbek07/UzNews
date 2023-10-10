@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.interview.models import Interview, InterviewTag, InterviewView, InterviewLike
+from apps.interview.models import Interview, InterviewTag, InterviewView
 
 
 @admin.register(Interview)
@@ -14,12 +14,6 @@ class InterviewAdmin(admin.ModelAdmin):
 @admin.register(InterviewTag)
 class InterviewTagAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
-    search_fields = ("name",)
-
-
-@admin.register(InterviewLike)
-class InterviewLikeAdmin(admin.ModelAdmin):
-    list_display = ("id", "user")
     search_fields = ("name",)
 
 

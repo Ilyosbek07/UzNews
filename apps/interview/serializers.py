@@ -1,16 +1,6 @@
 from rest_framework import serializers
 
-from apps.interview.models import Interview, InterviewLike, InterviewTag
-
-
-class InterviewLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = InterviewLike
-        fields = (
-            "",
-            "",
-            "",
-        )
+from apps.interview.models import Interview, InterviewTag, InterviewView
 
 
 class InterviewTagSerializer(serializers.ModelSerializer):
@@ -39,7 +29,7 @@ class InterviewSerializer(serializers.ModelSerializer):
 
 class InterviewDetailSerializer(serializers.ModelSerializer):
     tag = InterviewTagSerializer(many=True)
-    related_interviews = serializers.SerializerMethodField()
+    view_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Interview
@@ -51,6 +41,9 @@ class InterviewDetailSerializer(serializers.ModelSerializer):
             "video_url",
             "tag",
             "date_time_in_word",
-            "related_interviews",
+            "view_count",
             "created_at",
         )
+
+    def get_view_count(self, obj):
+        return InterviewView.objects.filter(interview=obj).count()
