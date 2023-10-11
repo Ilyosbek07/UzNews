@@ -37,7 +37,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username']
+        fields = ["first_name", "last_name", "email", "username"]
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
@@ -72,6 +72,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise ValidationError(str(e))
         return user
+
 
 class UserSearchSerializer(serializers.ModelSerializer):
     class Meta:

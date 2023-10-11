@@ -1,8 +1,11 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
-from apps.users.views import RegistrationAPIView, UserProfileAPIView, AuthorProfileListView, \
-    ProfileUpdateView, UserUpdateView, UserSearchesListView, PopularSearchesListView
+from apps.users.views import (AuthorProfileListView, PopularSearchesListView,
+                              ProfileUpdateView, RegistrationAPIView,
+                              UserProfileAPIView, UserSearchesListView,
+                              UserUpdateView)
 
 urlpatterns = [
     path(
@@ -15,14 +18,8 @@ urlpatterns = [
         PopularSearchesListView.as_view(),
         name="popular_searches",
     ),
-
     path("login/", TokenObtainPairView.as_view(), name="login"),
     path("registration/", RegistrationAPIView.as_view(), name="user_register"),
     path("refresh/", TokenRefreshView.as_view(), name="refresh_token"),
-
-    path("profile/", UserProfileAPIView.as_view(), name="profile"),
-    path("profile/list/", AuthorProfileListView.as_view(), name="profile-list"),
-
-    path("profile/edit/<int:pk>/", ProfileUpdateView.as_view(), name="profile_edit"),
-    path("edit/<int:pk>/", UserUpdateView.as_view(), name="user_edit"),
+    path("author/list/", AuthorProfileListView.as_view(), name="author_list"),
 ]

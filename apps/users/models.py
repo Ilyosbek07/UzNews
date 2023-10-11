@@ -79,7 +79,7 @@ class Profile(models.Model):
     image = models.ImageField(verbose_name=_("Profile Image"), upload_to="user_image/")
     info = models.TextField(verbose_name=_("Info"), null=True, blank=True)
     role = models.CharField(_("Role"), max_length=55, choices=Role.choices, default=Role.simple_user)
-    post_view_count = models.BigIntegerField(verbose_name=_('Post View Count'), null=True, blank=True)
+    post_view_count = models.BigIntegerField(verbose_name=_("Post View Count"), null=True, blank=True)
     telegram = models.URLField(verbose_name=_("Telegram"), null=True, blank=True)
     instagram = models.URLField(verbose_name=_("Instagram"), null=True, blank=True)
     facebook = models.URLField(verbose_name=_("Facebook"), null=True, blank=True)
@@ -92,4 +92,4 @@ class Profile(models.Model):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return f'User Full Name - {self.user.first_name} {self.user.last_name}'
+        return f"User Full Name - {self.user.first_name} {self.user.last_name}"

@@ -14,6 +14,7 @@ urlpatterns = [
     path("common/", include("apps.common.urls")),
     path("interview/", include("apps.interview.urls")),
     path("photo-report/", include("apps.photoreport.urls")),
+    path("back-office/", include("apps.back_office.urls")),
     # path("review/", include("apps.review.urls")),
 ]
 

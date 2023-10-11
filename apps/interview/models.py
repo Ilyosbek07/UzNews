@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel, LikeBase, NewsBase, Tag, CommentBase
+from apps.common.models import BaseModel, CommentBase, LikeBase, NewsBase, Tag
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
 from apps.users.models import Profile, User
 
@@ -33,7 +33,6 @@ class Interview(BaseModel, NewsBase):
     class Meta:
         verbose_name = "Interview"
         verbose_name_plural = "Interviews"
-
 
 
 class Comment(BaseModel):

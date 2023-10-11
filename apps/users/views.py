@@ -1,11 +1,15 @@
+from django.db.models import Count
+from rest_framework import generics, permissions, status
 from rest_framework.parsers import MultiPartParser
+from rest_framework.response import Response
 
 from apps.users.choices import Role
 from apps.users.models import Profile, User, UserSearch
-from rest_framework.response import Response
-from rest_framework import generics, permissions, status
-from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer, ProfileUpdateSerializer, \
-    UserUpdateSerializer, UserSearchSerializer, PopularSearchSerializer
+from apps.users.serializers import (PopularSearchSerializer,
+                                    ProfileUpdateSerializer,
+                                    RegisterUserSerializer,
+                                    UserProfileSerializer,
+                                    UserSearchSerializer, UserUpdateSerializer)
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -13,8 +17,13 @@ class RegistrationAPIView(generics.CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 
+class ProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
 class AuthorProfileListView(generics.ListAPIView):
-    queryset = Profile.objects.filter(role=Role.author).order_by('-post_view_count')
+    queryset = Profile.objects.filter(role=Role.author).order_by("-post_view_count")
     serializer_class = UserProfileSerializer
 
 

@@ -3,7 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.choices import LikeStatusChoices, Advertising_choices, ContentChoices
+from apps.common.choices import (Advertising_choices, ContentChoices,
+                                 LikeStatusChoices)
 from apps.users.models import User
 
 
@@ -26,8 +27,7 @@ class NewsBase(models.Model):
     def date_time_in_word(self):
         data = dict()
         if self.created_at.date() == timezone.now().date():
-            time_difference_in_seconds = (
-                    timezone.now() - self.created_at).total_seconds()
+            time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
             if 3600 > int(time_difference_in_seconds) > 60:
                 data["minute"] = int((int(time_difference_in_seconds) / 60))
             elif 86400 >= int(time_difference_in_seconds) >= 3600:
@@ -87,10 +87,7 @@ class ContactBase(models.Model):
 class Advertising(models.Model):
     file = models.FileField(verbose_name=_("File"))
     type = models.CharField(
-        max_length=55,
-        choices=Advertising_choices.choices,
-        default=Advertising_choices.banner,
-        verbose_name=_("Type")
+        max_length=55, choices=Advertising_choices.choices, default=Advertising_choices.banner, verbose_name=_("Type")
     )
 
     def __str__(self):
@@ -127,11 +124,7 @@ class Tag(BaseModel):
 
 
 class ContentView(BaseModel):
-    content = models.CharField(
-        max_length=125,
-        choices=ContentChoices.choices,
-        verbose_name=_("Content View")
-    )
+    content = models.CharField(max_length=125, choices=ContentChoices.choices, verbose_name=_("Content View"))
     user = models.ForeignKey(
         User,
         verbose_name=_("User"),
@@ -150,4 +143,3 @@ class ContentView(BaseModel):
     class Meta:
         verbose_name = _("Content View")
         verbose_name_plural = _("Content Views")
-

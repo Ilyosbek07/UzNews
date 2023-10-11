@@ -9,4 +9,3 @@ class InterviewAdmin(admin.ModelAdmin):
     list_filter = ("title",)
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
-

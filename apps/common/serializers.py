@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from apps.common.models import Advertising, SocialMedia, Tag
 
 
@@ -18,4 +19,3 @@ class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = ("id", "logo", "url", "number", "desc")
-
