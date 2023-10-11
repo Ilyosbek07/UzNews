@@ -35,32 +35,6 @@ class Interview(BaseModel, NewsBase):
         verbose_name_plural = "Interviews"
 
 
-class InterviewView(BaseModel):
-    interview = models.ForeignKey(
-        Interview,
-        verbose_name=_("Interview"),
-        on_delete=models.CASCADE,
-        related_name="interview_view",
-    )
-    user = models.ForeignKey(
-        User,
-        verbose_name=_("User"),
-        on_delete=models.CASCADE,
-        related_name="user_views",
-        null=True,
-        blank=True,
-    )
-    device_id = models.CharField(
-        verbose_name=_("Identified device"),
-        max_length=255,
-        null=True,
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = _("Interview View")
-        verbose_name_plural = _("Interview Views")
-
 
 class Comment(BaseModel):
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE, verbose_name=_("Interview"))

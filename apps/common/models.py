@@ -3,7 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.choices import LikeStatusChoices, Advertising_choices
+from apps.common.choices import LikeStatusChoices, Advertising_choices, ContentChoices
+from apps.users.models import User
 
 
 class BaseModel(models.Model):
@@ -123,3 +124,30 @@ class Tag(BaseModel):
     class Meta:
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
+
+
+class ContentView(BaseModel):
+    content = models.CharField(
+        max_length=125,
+        choices=ContentChoices.choices,
+        verbose_name=_("Content View")
+    )
+    user = models.ForeignKey(
+        User,
+        verbose_name=_("User"),
+        on_delete=models.CASCADE,
+        related_name="user_views",
+        null=True,
+        blank=True,
+    )
+    device_id = models.CharField(
+        verbose_name=_("Identified device"),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Content View")
+        verbose_name_plural = _("Content Views")
+

@@ -4,7 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.news.models import News
 from apps.news.serializers import NewsSerializer
-from apps.users.models import Profile, User
+from apps.users.models import Profile, User, UserSearch
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -72,3 +72,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise ValidationError(str(e))
         return user
+
+class UserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSearch
+        fields = ["id", "search_text"]
+
+
+class PopularSearchSerializer(serializers.Serializer):
+    search_text = serializers.CharField()

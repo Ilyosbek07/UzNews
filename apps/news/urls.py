@@ -23,7 +23,7 @@ urlpatterns = [
     path("all_articles/", AllArticlesViewSet.as_view(), name="all_articles"),
     path("news_article_detail/<int:pk>/", ArticleAndNewsRetrieveViewSet.as_view(), name="news_article_detail"),
     path("suggested_news/<int:pk>/", SuggestedNewsViewSet.as_view(), name="suggested_news"),
-    path("suggested_articles/<int:pk>/", SuggestedArticlesViewSet.as_view(), name="suggested_articles"),
+    # path("suggested_articles/<int:pk>/", SuggestedArticlesViewSet.as_view(), name="suggested_articles"),
     path(
         "news_category_list/",
         NewsCategoryListViewSet.as_view(),

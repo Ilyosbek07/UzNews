@@ -1,11 +1,11 @@
 from rest_framework.parsers import MultiPartParser
 
 from apps.users.choices import Role
-from apps.users.models import Profile, User
+from apps.users.models import Profile, User, UserSearch
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer, ProfileUpdateSerializer, \
-    UserUpdateSerializer
+    UserUpdateSerializer, UserSearchSerializer, PopularSearchSerializer
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -19,6 +19,7 @@ class AuthorProfileListView(generics.ListAPIView):
 
 
 class UserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -27,6 +28,7 @@ class ProfileUpdateView(generics.UpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileUpdateSerializer
     parser_classes = (MultiPartParser,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
@@ -42,3 +44,21 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         serializer = self.serializer_class(profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserSearchesListView(generics.ListAPIView):
+    queryset = UserSearch.objects.all()
+    serializer_class = UserSearchSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return UserSearch.objects.filter(user=self.request.user).order_by("-created_at")
+        return UserSearch.objects.none()
+
+
+class PopularSearchesListView(generics.ListAPIView):
+    queryset = UserSearch.objects.all()
+    serializer_class = PopularSearchSerializer
+
+    def get_queryset(self):
+        return UserSearch.objects.values("search_text").annotate(count=Count("search_text")).order_by("-count")

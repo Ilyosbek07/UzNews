@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.interview.models import Interview, InterviewView
+from apps.interview.models import Interview
 
 
 @admin.register(Interview)
@@ -10,8 +10,3 @@ class InterviewAdmin(admin.ModelAdmin):
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
 
-
-@admin.register(InterviewView)
-class InterviewViewAdmin(admin.ModelAdmin):
-    list_display = ("id", "interview")
-    search_fields = ("interview",)

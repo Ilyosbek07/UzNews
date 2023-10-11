@@ -2,25 +2,21 @@ from rest_framework import serializers
 
 from apps.common.choices import LikeStatusChoices
 from apps.common.serializers import TagSerializer
-from apps.interview.models import Interview, InterviewView
+from apps.interview.models import Interview
 
 
 class InterviewSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True)
-    view_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Interview
         fields = (
             "id",
             "title",
+            "slug",
             "tag",
-            "view_count",
             "date_time_in_word",
         )
-
-    def get_view_count(self, obj):
-        return InterviewView.objects.filter(interview=obj).count()
 
 
 class InterviewCreateSerializer(serializers.ModelSerializer):
@@ -37,7 +33,6 @@ class InterviewCreateSerializer(serializers.ModelSerializer):
 
 class InterviewDetailSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True)
-    view_count = serializers.SerializerMethodField()
     likes_dislikes = serializers.SerializerMethodField()
 
     class Meta:
@@ -51,12 +46,8 @@ class InterviewDetailSerializer(serializers.ModelSerializer):
             "tag",
             "date_time_in_word",
             "likes_dislikes",
-            "view_count",
             "created_at",
         )
-
-    def get_view_count(self, obj):
-        return InterviewView.objects.filter(interview=obj).count()
 
     def get_likes_dislikes(self, obj):
         data = {

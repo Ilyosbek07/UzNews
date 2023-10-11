@@ -13,3 +13,10 @@ class LikeStatusChoices(TextChoices):
     LIKED = "l", _("Liked")
     DISLIKED = "d", _("Disliked")
     NEUTRAL = "n", _("Neutral")
+
+
+class ContentChoices(TextChoices):
+    INTERVIEW = "interview", _("interview")
+    PODCAST = "podcast", _("Disliked")
+    PHOTO_REPORT = "photo_report", _("Photo Report")
+    NEWS = "news", _("News")

@@ -50,7 +50,7 @@ class CommonAPITestCase(test.APITestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Tag.objects.count(), 1)
 
-    def test_get_tag_create(self):
+    def test_tag_create(self):
         url = reverse('tag_create')
         data = {
             'name': 'Tag 2'
