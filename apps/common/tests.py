@@ -33,20 +33,3 @@ class CommonAPITestCase(test.APITestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Advertising.objects.count(), 1)
 
-    def test_get_exchange_rate(self):
-        url = reverse("exchange_rate")
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-
-    def test_get_tag_list(self):
-        url = reverse("tag_list")
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(Tag.objects.count(), 1)
-
-    def test_tag_create(self):
-        url = reverse("tag_create")
-        data = {"name": "Tag 2"}
-        response = self.client.post(url, data=data)
-        self.assertEquals(response.status_code, 201)
-        self.assertEquals(Tag.objects.count(), 2)

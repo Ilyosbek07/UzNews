@@ -149,18 +149,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 
-gettext = lambda s: s
+MODELTRANSLATION_LANGUAGES = ('uz', "ru", 'en')
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('uz', "ru", 'en')
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+gettext = lambda s: s  # noqa
 
 LANGUAGES = (
     ("uz", gettext("Uzbek")),
     ("ru", gettext("Russian")),
     ("en", gettext("English")),
 )
-MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 
-LOCALE_PATHS = [
-    BASE_DIR / "locale/",
-]
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Tashkent"
 

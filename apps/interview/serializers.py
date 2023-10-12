@@ -14,6 +14,7 @@ class InterviewSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "slug",
+            "status",
             "tag",
             "date_time_in_word",
         )
@@ -23,6 +24,7 @@ class InterviewCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interview
         fields = (
+            "id",
             "title",
             "subtitle",
             "status",

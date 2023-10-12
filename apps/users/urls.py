@@ -22,4 +22,6 @@ urlpatterns = [
     path("registration/", RegistrationAPIView.as_view(), name="user_register"),
     path("refresh/", TokenRefreshView.as_view(), name="refresh_token"),
     path("author/list/", AuthorProfileListView.as_view(), name="author_list"),
+    path("profile/detail/", UserProfileAPIView.as_view(), name="profile"),
+
 ]

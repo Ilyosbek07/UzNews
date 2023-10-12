@@ -76,7 +76,7 @@ class UserSearch(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, related_name="profile", verbose_name=_("User"), on_delete=models.CASCADE)
-    image = models.ImageField(verbose_name=_("Profile Image"), upload_to="user_image/")
+    image = models.ImageField(verbose_name=_("Profile Image"), upload_to="user_image/", null=True, blank=True)
     info = models.TextField(verbose_name=_("Info"), null=True, blank=True)
     role = models.CharField(_("Role"), max_length=55, choices=Role.choices, default=Role.simple_user)
     post_view_count = models.BigIntegerField(verbose_name=_("Post View Count"), null=True, blank=True)

@@ -36,8 +36,11 @@ class UserUpdateView(generics.UpdateAPIView):
 class ProfileUpdateView(generics.UpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileUpdateSerializer
-    parser_classes = (MultiPartParser,)
-    permission_classes = (permissions.IsAuthenticated,)
+
+
+class ProfileDestroyAPIView(generics.DestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileUpdateSerializer
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):

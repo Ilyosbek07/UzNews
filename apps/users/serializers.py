@@ -15,8 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    author_set = NewsSerializer(many=True)
-
     class Meta:
         model = Profile
         fields = (
@@ -30,7 +28,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "instagram",
             "facebook",
             "twitter",
-            "author_set",
         )
 
 

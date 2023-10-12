@@ -6,7 +6,7 @@ from apps.common.models import Advertising, SocialMedia, Tag
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ("name",)
+        fields = ("id", "name")
 
 
 class AdvertisingSerializer(serializers.ModelSerializer):
