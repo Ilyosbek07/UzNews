@@ -7,6 +7,9 @@ from apps.common.choices import (Advertising_choices, ContentChoices,
                                  LikeStatusChoices)
 from apps.users.models import User
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -123,23 +126,34 @@ class Tag(BaseModel):
         verbose_name_plural = "Tags"
 
 
+class CountViewManager(models.Manager):
+    def create_for_object(self, obj, user):
+        content_type = ContentType.objects.get_for_model(obj)
+        return self.create(content_type=content_type, object_id=obj.id, user=user)
+
+
 class ContentView(BaseModel):
-    content = models.CharField(max_length=125, choices=ContentChoices.choices, verbose_name=_("Content View"))
-    user = models.ForeignKey(
-        User,
-        verbose_name=_("User"),
-        on_delete=models.CASCADE,
-        related_name="user_views",
-        null=True,
-        blank=True,
-    )
-    device_id = models.CharField(
-        verbose_name=_("Identified device"),
-        max_length=255,
-        null=True,
-        blank=True,
-    )
+    content_type = models.ForeignKey(ContentType,
+                                     on_delete=models.CASCADE,
+                                     related_name="content_view",
+                                     verbose_name=_("Content view"),
+                                     null=True,
+                                     blank=True
+                                     )
+    object_id = models.PositiveIntegerField(verbose_name=_("Object id"))
+    content_object = GenericForeignKey("content_type", "object_id")
+    user = models.ForeignKey("users.User",
+                             on_delete=models.CASCADE,
+                             null=True,
+                             blank=True,
+                             related_name="count_view",
+                             verbose_name=_("User")
+                             )
+
+    objects = CountViewManager()
+
+    def str(self):
+        return f"{self.content_type}"
 
     class Meta:
-        verbose_name = _("Content View")
-        verbose_name_plural = _("Content Views")
+        unique_together = ("content_type", "object_id", "user")
