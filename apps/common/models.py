@@ -149,6 +149,12 @@ class ContentView(BaseModel):
                              related_name="count_view",
                              verbose_name=_("User")
                              )
+    device_id = models.CharField(
+                                verbose_name=_("Identified device"),
+                                max_length=255,
+                                null=True,
+                                blank=True,
+                                )
 
     objects = CountViewManager()
 
@@ -156,4 +162,4 @@ class ContentView(BaseModel):
         return f"{self.content_type}"
 
     class Meta:
-        unique_together = ("content_type", "object_id", "user")
+        unique_together = (("content_type", "object_id", "user"), ("content_type", "object_id", "device_id"))
