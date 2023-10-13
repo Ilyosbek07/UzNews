@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.common.models import Advertising, SocialMedia, Tag, ContentView
+from apps.common.models import Advertising, SocialMedia, Tag, ContentView, ContentLike
 
 
 @admin.register(Tag)
@@ -25,3 +25,7 @@ class SocialMediaAdmin(admin.ModelAdmin):
 class SocialMediaAdmin(admin.ModelAdmin):
     list_display = ("id", "content_object")
 
+
+@admin.register(ContentLike)
+class SocialMediaAdmin(admin.ModelAdmin):
+    list_display = ("id", "content_object", "status")

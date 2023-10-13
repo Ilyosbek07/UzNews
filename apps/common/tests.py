@@ -8,7 +8,9 @@ from apps.common.models import Advertising, SocialMedia, Tag
 
 class CommonAPITestCase(test.APITestCase):
     def setUp(self):
-        self.file = SimpleUploadedFile("test_file.png", b"Test content for the file", content_type="text/plain")
+        self.file = SimpleUploadedFile(
+            "test_file.png", b"Test content for the file", content_type="text/plain"
+        )
         self.social_media = SocialMedia.objects.create(
             logo=self.file,
             url="http://127.0.0.1:8000/swagger/",
