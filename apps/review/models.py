@@ -4,17 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import BaseModel, NewsBase
 
 
-class Tag(BaseModel):
-    name = models.CharField(max_length=255, verbose_name=_("Name"))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _("Tag")
-        verbose_name_plural = _("Tags")
-
-
 class Category(BaseModel):
     name = models.CharField(_("Name"), max_length=100)
     slug = models.SlugField(_("Slug"))
@@ -28,8 +17,10 @@ class Category(BaseModel):
 
 
 class Review(NewsBase, BaseModel):
-    subtitle = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Subtitle"))
-    tag = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"))
+    subtitle = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name=_("Subtitle")
+    )
+    tag = models.ManyToManyField("common.Tag", blank=True, verbose_name=_("Tags"))
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -44,8 +35,12 @@ class Review(NewsBase, BaseModel):
         related_name="reviews",
         verbose_name=_("Author"),
     )
-    image = models.ImageField(upload_to="review/images", blank=True, null=True, verbose_name=_("Image"))
-    cover = models.ImageField(upload_to="review/covers", blank=True, null=True, verbose_name=_("Cover"))
+    image = models.ImageField(
+        upload_to="review/images", blank=True, null=True, verbose_name=_("Image")
+    )
+    cover = models.ImageField(
+        upload_to="review/covers", blank=True, null=True, verbose_name=_("Cover")
+    )
     liked = models.IntegerField(default=0, verbose_name=_("Liked"))
     view = models.IntegerField(default=0, verbose_name=_("View"))
 
@@ -55,58 +50,6 @@ class Review(NewsBase, BaseModel):
     class Meta:
         verbose_name = _("Review")
         verbose_name_plural = _("Reviews")
-
-
-class ReviewLiked(BaseModel):
-    user = models.ForeignKey(
-        "users.User",
-        on_delete=models.CASCADE,
-        related_name="review_liked",
-        verbose_name=_("User"),
-    )
-    review = models.ForeignKey(
-        Review,
-        on_delete=models.CASCADE,
-        related_name="review_liked",
-        verbose_name=_("Review"),
-    )
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        self.review.liked += 1
-        self.review.save()
-
-    class Meta:
-        verbose_name = _("Review like")
-        verbose_name_plural = _("Review likes")
-        unique_together = ("user", "review")
-
-
-class ReviewView(BaseModel):
-    user = models.ForeignKey(
-        "users.User",
-        on_delete=models.CASCADE,
-        related_name="review_view",
-        verbose_name=_("User"),
-    )
-    review = models.ForeignKey(
-        Review,
-        on_delete=models.CASCADE,
-        related_name="review_view",
-        verbose_name=_("Review"),
-    )
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        self.review.view += 1
-        self.review.save()
-
-    class Meta:
-        verbose_name = _("Review view")
-        verbose_name_plural = _("Review views")
-        unique_together = ("user", "review")
 
 
 class Comment(BaseModel):
