@@ -217,4 +217,4 @@ class ContentLike(BaseModel):
         return f"{self.content_type}"
 
     class Meta:
-        unique_together = ("content_type", "object_id", "status", "user")
+        unique_together = ("content_type", "object_id", "user")
