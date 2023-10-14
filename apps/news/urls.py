@@ -4,9 +4,7 @@ from apps.news.views.article import (AllArticlesViewSet, MainArticleViewSet,
                                      SuggestedArticlesViewSet)
 from apps.news.views.news import (AllNewsViewSet,
                                   ArticleAndNewsRetrieveViewSet,
-                                  MainNewsViewSet,
-                                  NewsArticleCommentReportViewSet,
-                                  NewsCategoryListViewSet,
+                                  MainNewsViewSet, NewsCategoryListViewSet,
                                   PopularAndDiscussedNewsViewSet,
                                   SuggestedNewsViewSet,
                                   TimeLineNewsListViewSet)
@@ -34,5 +32,4 @@ urlpatterns = [
         TimeLineNewsListViewSet.as_view(),
         name="timeline_news_list",
     ),
-    path("news_article_comment_report/", NewsArticleCommentReportViewSet.as_view(), name="news_article_comment_report"),
 ]
