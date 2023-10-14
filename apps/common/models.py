@@ -29,9 +29,7 @@ class NewsBase(models.Model):
     def date_time_in_word(self):
         data = dict()
         if self.created_at.date() == timezone.now().date():
-            time_difference_in_seconds = (
-                timezone.now() - self.created_at
-            ).total_seconds()
+            time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
             if 3600 > int(time_difference_in_seconds) > 60:
                 data["minute"] = int((int(time_difference_in_seconds) / 60))
             elif 86400 >= int(time_difference_in_seconds) >= 3600:
@@ -63,9 +61,7 @@ class CommentBase(models.Model):
 
 
 class ReportBase(models.Model):
-    text = models.CharField(
-        max_length=255, verbose_name=_("Text"), null=True, blank=True
-    )
+    text = models.CharField(max_length=255, verbose_name=_("Text"), null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -74,9 +70,7 @@ class ReportBase(models.Model):
 class LikeBase(models.Model):
     user = None
     content = None
-    status = models.CharField(
-        max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Status")
-    )
+    status = models.CharField(max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Status"))
 
     class Meta:
         abstract = True
@@ -95,10 +89,7 @@ class ContactBase(models.Model):
 class Advertising(models.Model):
     file = models.FileField(verbose_name=_("File"))
     type = models.CharField(
-        max_length=55,
-        choices=Advertising_choices.choices,
-        default=Advertising_choices.banner,
-        verbose_name=_("Type"),
+        max_length=55, choices=Advertising_choices.choices, default=Advertising_choices.banner, verbose_name=_("Type")
     )
 
     def __str__(self):
@@ -121,6 +112,19 @@ class SocialMedia(models.Model):
     class Meta:
         verbose_name = _("Social Media")
         verbose_name_plural = _("Social Media")
+
+
+class Category(BaseModel):
+    name = models.CharField(_("Name"), max_length=100)
+    slug = models.SlugField(_("Slug"))
+    icon = models.FileField(_("Icon"), upload_to="podcast/icons/")
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    def __str__(self):
+        return self.name
 
 
 class Tag(BaseModel):
@@ -146,8 +150,8 @@ class ContentView(BaseModel):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        related_name="content_view",
         verbose_name=_("Content view"),
+        related_name="%(app_label)s_%(class)s_related",
         null=True,
         blank=True,
     )
@@ -158,7 +162,7 @@ class ContentView(BaseModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="count_view",
+        related_name="%(app_label)s_%(class)s_related",
         verbose_name=_("User"),
     )
     device_id = models.CharField(
@@ -207,7 +211,7 @@ class ContentLike(BaseModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="count_like",
+        related_name="%(app_label)s_%(class)s_related",
         verbose_name=_("User"),
     )
 

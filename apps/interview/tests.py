@@ -6,7 +6,7 @@ from apps.interview.models import Interview
 from apps.users.models import User
 
 
-class LessonTestCase(APITestCase):
+class InterviewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             password="test_password",
@@ -16,8 +16,8 @@ class LessonTestCase(APITestCase):
         self.interview = Interview.objects.create(
             style_type=InterviewStyleStatusChoices.STYLE_1,
             status=StatusChoices.DRAFT,
-            subtitle='Subtitle Test',
-            video_url='https://www.figma.com/file/'
+            subtitle="Subtitle Test",
+            video_url="https://www.figma.com/file/",
         )
 
     def test_interview_list(self):
