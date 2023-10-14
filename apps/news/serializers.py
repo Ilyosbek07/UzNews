@@ -1,14 +1,8 @@
 from rest_framework import serializers
+
 from apps.common.choices import LikeStatusChoices
-from apps.news.models import (BreakingNews, News, NewsCategory, NewsComment,
-                              NewsCommentReport, NewsLike, NewsTag, NewsView)
+from apps.news.models import BreakingNews, News, NewsCategory
 from apps.users.models import Profile
-
-
-class NewsTagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsTag
-        fields = ("id", "name")
 
 
 class NewsCategorySerializer(serializers.ModelSerializer):
@@ -19,7 +13,6 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     category = NewsCategorySerializer()
-    tags = NewsTagSerializer(many=True)
     likes_dislikes = serializers.SerializerMethodField()
     comments_count = serializers.SerializerMethodField()
     author = serializers.SerializerMethodField()
@@ -60,6 +53,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
     def get_author(self, obj):
         from apps.users.serializers import UserProfileSerializer
+
         profile = Profile.objects.get(user=obj.author.id)
         return UserProfileSerializer(profile).data
 
@@ -68,30 +62,6 @@ class TimeLineNewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ("id", "title", "created_at")
-
-
-class NewsCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsComment
-        fields = ("id", "user", "news", "text", "created_at", "updated_at")
-
-
-class NewsCommentReportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsCommentReport
-        fields = ("id", "user", "comment", "text")
-
-
-class NewsViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsView
-        fields = ("id", "user", "news")
-
-
-class NewsLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NewsLike
-        fields = ("id", "user", "news")
 
 
 class BreakingNewsSerializer(serializers.ModelSerializer):
