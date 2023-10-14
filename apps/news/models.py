@@ -3,22 +3,12 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import (BaseModel, CommentBase, LikeBase, NewsBase,
-                                ReportBase)
+from apps.common.models import (BaseModel, ContentLike, ContentView, NewsBase,
+                                Tag)
 from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
                                NewsStyleChoices, NewsTypeChoices)
 from apps.news.managers import NewsManager
 from apps.users.models import User
-
-
-class NewsTag(models.Model):
-    name = models.CharField(_("name of tag"))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "News Tags"
 
 
 class NewsCategory(models.Model):
@@ -32,7 +22,7 @@ class News(NewsBase, BaseModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_to_news")
     is_verified = models.BooleanField(blank=True)
     cover = models.ImageField(upload_to="news/cover_images/")
-    tags = models.ManyToManyField(NewsTag, related_name="news_to_tags")
+    tags = models.ManyToManyField(Tag, related_name="news_to_tags")
     category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE)
     position = models.CharField(
         _("position of news in main site page"),
@@ -80,45 +70,13 @@ class News(NewsBase, BaseModel):
 
     @property
     def view_count(self):
-        return NewsView.objects.filter(news__id=self.id).count()
-
-
-class NewsLike(LikeBase):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_like_to_news")
-
-    def __str__(self):
-        return self.news.title
-
-
-class NewsComment(CommentBase, BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_comment_to_news")
-
-    def __str__(self):
-        return self.text
-
-
-class NewsCommentReport(ReportBase, BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(NewsComment, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.username}"
+        return ContentView.objects.filter(news__id=self.id).count()
 
 
 class NewsCancelReason(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
     text = models.TextField(_("the reason of cancel"))
-
-
-class NewsView(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_view_to_news")
-
-    def __str__(self):
-        return self.news.title
 
 
 class BreakingNews(BaseModel):

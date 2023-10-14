@@ -1,13 +1,6 @@
 from django.contrib import admin
 
-from .models import (BreakingNews, News, NewsCancelReason, NewsCategory,
-                     NewsComment, NewsCommentReport, NewsLike, NewsTag,
-                     NewsView)
-
-
-@admin.register(NewsTag)
-class NewsTagAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+from .models import BreakingNews, News, NewsCancelReason, NewsCategory
 
 
 @admin.register(NewsCategory)
@@ -21,26 +14,6 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ("status", "type")
     search_fields = ("title",)
     prepopulated_fields = {"slug": ("title",)}
-
-
-@admin.register(NewsLike)
-class NewsLikeAdmin(admin.ModelAdmin):
-    list_display = ("user", "news")
-
-
-@admin.register(NewsComment)
-class NewsCommentAdmin(admin.ModelAdmin):
-    list_display = ("user", "news", "text")
-
-
-@admin.register(NewsCommentReport)
-class NewsCommentReportAdmin(admin.ModelAdmin):
-    list_display = ("user", "comment")
-
-
-@admin.register(NewsView)
-class NewsViewAdmin(admin.ModelAdmin):
-    list_display = ("user", "news")
 
 
 @admin.register(BreakingNews)

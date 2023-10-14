@@ -1,15 +1,14 @@
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
                                NewsTypeChoices)
 from apps.news.filters import NewsFilter
 from apps.news.models import News, NewsCategory
-from apps.news.serializers import (NewsCategorySerializer,
-                                   NewsCommentReportSerializer, NewsSerializer,
+from apps.news.serializers import (NewsCategorySerializer, NewsSerializer,
                                    TimeLineNewsSerializer)
 
 
@@ -96,7 +95,3 @@ class SuggestedNewsViewSet(ListAPIView):
                 News.objects.filter(tags__in=tags, type=NewsTypeChoices.NEWS).exclude(id=news_id).distinct()[:4]
             )
             return suggested_news
-
-
-class NewsArticleCommentReportViewSet(CreateAPIView):
-    serializer_class = NewsCommentReportSerializer

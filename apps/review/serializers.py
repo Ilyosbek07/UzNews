@@ -1,9 +1,9 @@
-from apps.common.models import ContentLike
+from apps.common.models import ContentLike, Tag
 from apps.users.models import User
 from rest_framework import serializers
 
 from apps.review.models import Review, Comment
-from apps.photoreport.serializers import CommentUserSerializer, TagSerializer
+from apps.photoreport.serializers import CommentUserSerializer
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -19,10 +19,19 @@ class ReviewUserSerializer(serializers.ModelSerializer):
         fields = ("id", "first_name", "last_name")
 
 
+class ReviewTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = (
+            "id",
+            "name"
+        )
+
+
 class ReviewDetailSerializer(serializers.ModelSerializer):
     likes_dislikes = serializers.SerializerMethodField()
     author = ReviewUserSerializer()
-    # tag = TagSerializer(many=True)
+    tag = ReviewTagSerializer(many=True)
 
     class Meta:
         model = Review

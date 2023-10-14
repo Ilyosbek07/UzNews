@@ -13,7 +13,7 @@ def main():
     environ.Env().read_env(os.path.join(base_dir, ".env"))
 
     """
-    change settings module to core.settings.test when running tests
+    change settings module to core.settings.test when running test
     """
 
     try:

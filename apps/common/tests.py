@@ -34,4 +34,3 @@ class CommonAPITestCase(test.APITestCase):
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Advertising.objects.count(), 1)
-
