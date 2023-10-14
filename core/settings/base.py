@@ -53,6 +53,7 @@ CUSTOM_APPS = [
     "apps.news",
     "apps.photoreport",
     "apps.review",
+    "apps.back_office"
 ]
 
 THIRD_PARTY_APPS = [
@@ -63,6 +64,7 @@ THIRD_PARTY_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     "django_filters",
+    "auditlog"
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
@@ -84,6 +86,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    'auditlog.middleware.AuditlogMiddleware',
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -202,3 +205,10 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 AUTH_USER_MODEL = "users.User"
+AUDIT_LOG = {
+    'disable_for_admin': False,
+    'disable_for_superusers': True,
+    'disable_after': None,
+    'manager_name': 'auditlog',
+    'fields_excluded': ['created', 'session_key'],
+}

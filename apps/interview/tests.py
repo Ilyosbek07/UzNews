@@ -6,7 +6,7 @@ from apps.interview.models import Interview
 from apps.users.models import User
 
 
-class LessonTestCase(APITestCase):
+class InterviewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             password="test_password",

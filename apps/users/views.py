@@ -5,11 +5,14 @@ from rest_framework.response import Response
 
 from apps.users.choices import Role
 from apps.users.models import Profile, User, UserSearch
-from apps.users.serializers import (PopularSearchSerializer,
-                                    ProfileUpdateSerializer,
-                                    RegisterUserSerializer,
-                                    UserProfileSerializer,
-                                    UserSearchSerializer, UserUpdateSerializer)
+from apps.users.serializers import (
+    PopularSearchSerializer,
+    ProfileUpdateSerializer,
+    RegisterUserSerializer,
+    UserProfileSerializer,
+    UserSearchSerializer,
+    UserUpdateSerializer,
+)
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -25,37 +28,6 @@ class ProfileListView(generics.ListAPIView):
 class AuthorProfileListView(generics.ListAPIView):
     queryset = Profile.objects.filter(role=Role.author).order_by("-post_view_count")
     serializer_class = UserProfileSerializer
-
-
-class UserUpdateView(generics.UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserUpdateSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-
-class ProfileUpdateView(generics.UpdateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileUpdateSerializer
-
-
-class ProfileDestroyAPIView(generics.DestroyAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileUpdateSerializer
-
-
-class UserProfileAPIView(generics.RetrieveAPIView):
-    serializer_class = UserProfileSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_object(self):
-        return Profile.objects.get(user=self.request.user)
-
-    def get(self, request, *args, **kwargs):
-        profile = self.get_object()
-
-        serializer = self.serializer_class(profile)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserSearchesListView(generics.ListAPIView):

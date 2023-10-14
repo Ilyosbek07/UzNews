@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.common.views import AdvertisingListAPIView, SocialMediaListAPIView, get_exchange_rate, TagCreateAPIView, \
+from apps.common.views import AdvertisingListAPIView, SocialMediaListAPIView, get_exchange_rate, \
     TagListAPIView
 
 urlpatterns = [

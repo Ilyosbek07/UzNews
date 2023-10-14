@@ -13,3 +13,4 @@ django-modeltranslation
 django-ckeditor
 django-filter
 requests
+django-auditlogog

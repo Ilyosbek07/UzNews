@@ -42,17 +42,3 @@ class UserAPITestCase(APITestCase):
         self.assertIn("refresh", response.data)
         self.assertIn("access", response.data)
 
-    def test_get_profile(self):
-        data = {
-            "phone_number": "+998644321232",
-            "password": "my_pass123",
-        }
-        url = reverse("login")
-        login = self.client.post(url, data, format="json")
-
-        access_token = login.data["access"]
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
-        get_profile_url = reverse("profile")
-        response = self.client.get(get_profile_url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)

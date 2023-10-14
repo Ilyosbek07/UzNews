@@ -3,34 +3,21 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel
+from apps.common.models import BaseModel, Category
 from apps.users.models import Profile
 
 from .choices import LikeStatusChoices, PodcastStatusChoices
 
 
 class Tag(BaseModel):
-    name = models.CharField(_("Name"), max_length=100)
-
-    class Meta:
-        verbose_name = _("Podcast Tag")
-        verbose_name_plural = _("Podcast Tags")
+    name = models.CharField(_("Name"), max_length=255)
 
     def __str__(self):
         return self.name
 
-
-class Category(BaseModel):
-    name = models.CharField(_("Name"), max_length=100)
-    slug = models.SlugField(_("Slug"))
-    icon = models.FileField(_("Icon"), upload_to="podcast/icons/")
-
     class Meta:
-        verbose_name = _("Podcast Category")
-        verbose_name_plural = _("Podcast Categories")
-
-    def __str__(self):
-        return self.name
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
 
 
 class Podcast(BaseModel):

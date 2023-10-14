@@ -22,21 +22,6 @@ class TagListAPIView(generics.ListAPIView):
     serializer_class = TagSerializer
 
 
-class TagCreateAPIView(generics.CreateAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-
-class TagUpdateAPIView(generics.UpdateAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-
-class TagDestroyAPIView(generics.DestroyAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-
 @api_view(['GET'])
 def get_exchange_rate(request):
     response = requests.get('https://nbu.uz/uz/exchange-rates/json/')
