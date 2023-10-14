@@ -42,40 +42,6 @@ class NewsBase(models.Model):
         abstract = True
 
 
-class CommentBase(models.Model):
-    user = None
-    text = models.TextField(verbose_name=_("Text"))
-    is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
-    parent = models.ForeignKey(
-        "self",
-        verbose_name=_("Parent"),
-        on_delete=models.CASCADE,
-        related_name="%(app_label)s_%(class)s_related",
-        blank=True,
-        null=True,
-    )
-    image = models.ImageField(verbose_name=_("Image"))
-
-    class Meta:
-        abstract = True
-
-
-class ReportBase(models.Model):
-    text = models.CharField(max_length=255, verbose_name=_("Text"), null=True, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class LikeBase(models.Model):
-    user = None
-    content = None
-    status = models.CharField(max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Status"))
-
-    class Meta:
-        abstract = True
-
-
 class ContactBase(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Name"))
     phone_number = models.CharField(max_length=255, verbose_name=_("Phone Number"))
