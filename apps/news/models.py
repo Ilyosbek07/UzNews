@@ -3,8 +3,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import (BaseModel, CommentBase, LikeBase, NewsBase,
-                                ReportBase)
+from apps.common.models import BaseModel
 from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
                                NewsStyleChoices, NewsTypeChoices)
 from apps.news.managers import NewsManager
@@ -83,7 +82,7 @@ class News(NewsBase, BaseModel):
         return NewsView.objects.filter(news__id=self.id).count()
 
 
-class NewsLike(LikeBase):
+class NewsLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_like_to_news")
 
@@ -99,7 +98,7 @@ class NewsComment(CommentBase, BaseModel):
         return self.text
 
 
-class NewsCommentReport(ReportBase, BaseModel):
+class NewsCommentReport(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(NewsComment, on_delete=models.CASCADE)
 
