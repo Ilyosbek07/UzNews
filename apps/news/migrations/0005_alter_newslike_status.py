@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('news', '0004_alter_breakingnews_options_alter_news_options_and_more'),
+        ("news", "0004_alter_breakingnews_options_alter_news_options_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='newslike',
-            name='status',
-            field=models.CharField(choices=[('l', 'Liked'), ('d', 'Disliked'), ('n', 'Neutral')], max_length=10, verbose_name='Status'),
+            model_name="newslike",
+            name="status",
+            field=models.CharField(
+                choices=[("l", "Liked"), ("d", "Disliked"), ("n", "Neutral")],
+                max_length=10,
+                verbose_name="Status",
+            ),
         ),
     ]

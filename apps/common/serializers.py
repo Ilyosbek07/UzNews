@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from apps.common.models import Advertising, SocialMedia
+
+from apps.common.models import Advertising, SocialMedia, Tag
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ("id", "name")
 
 
 class AdvertisingSerializer(serializers.ModelSerializer):

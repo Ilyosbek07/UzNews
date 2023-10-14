@@ -55,7 +55,15 @@ CUSTOM_APPS = [
     "apps.review",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation", "ckeditor", "ckeditor_uploader"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_yasg",
+    "corsheaders",
+    "modeltranslation",
+    "ckeditor",
+    "ckeditor_uploader",
+    "django_filters",
+]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -141,24 +149,24 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 
-gettext = lambda s: s
+MODELTRANSLATION_LANGUAGES = ("uz", "ru", "en")
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
+MODELTRANSLATION_FALLBACK_LANGUAGES = ("uz", "ru", "en")
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+gettext = lambda s: s  # noqa
 
 LANGUAGES = (
     ("uz", gettext("Uzbek")),
     ("ru", gettext("Russian")),
     ("en", gettext("English")),
 )
-MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 
-LOCALE_PATHS = [
-    BASE_DIR / "locale/",
-]
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

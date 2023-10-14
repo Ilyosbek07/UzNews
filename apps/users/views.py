@@ -1,7 +1,15 @@
-from apps.users.models import Profile, User
-from rest_framework.response import Response
+from django.db.models import Count
 from rest_framework import generics, permissions, status
-from apps.users.serializers import RegisterUserSerializer, UserProfileSerializer
+from rest_framework.parsers import MultiPartParser
+from rest_framework.response import Response
+
+from apps.users.choices import Role
+from apps.users.models import Profile, User, UserSearch
+from apps.users.serializers import (PopularSearchSerializer,
+                                    ProfileUpdateSerializer,
+                                    RegisterUserSerializer,
+                                    UserProfileSerializer,
+                                    UserSearchSerializer, UserUpdateSerializer)
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -9,19 +17,30 @@ class RegistrationAPIView(generics.CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 
-class UserProfileUpdateView(generics.UpdateAPIView):
+class ProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.all()
     serializer_class = UserProfileSerializer
+
+
+class AuthorProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.filter(role=Role.author).order_by("-post_view_count")
+    serializer_class = UserProfileSerializer
+
+
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def put(self, request, *args, **kwargs):
-        profile = Profile.objects.get(user=self.request.user)
-        serializer = self.serializer_class(profile, data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+class ProfileUpdateView(generics.UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileUpdateSerializer
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileDestroyAPIView(generics.DestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileUpdateSerializer
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
@@ -39,29 +58,19 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# class NotificationsAPIView(generics.ListAPIView):
-#     serializer_class = NotificationSerializer
-#     queryset = Notification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#
-# class ReadDetailNotificationAPIView(generics.RetrieveAPIView):
-#     serializer_class = NotificationSerializer
-#     queryset = Notification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get(self, request, *args, **kwargs):
-#         self.get_or_create_read_notification()
-#         return self.retrieve(request, *args, **kwargs)
-#
-#     def get_or_create_read_notification(self):
-#         ReadNotification.objects.get_or_create(user=self.request.user, notification=self.get_object())
-#
-#
-# class ReadNotificationsAPIView(generics.ListAPIView):
-#     serializer_class = ReadNotificationSerializer
-#     queryset = ReadNotification.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get_queryset(self):
-#         return self.queryset.filter(user=self.request.user)
+class UserSearchesListView(generics.ListAPIView):
+    queryset = UserSearch.objects.all()
+    serializer_class = UserSearchSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return UserSearch.objects.filter(user=self.request.user).order_by("-created_at")
+        return UserSearch.objects.none()
+
+
+class PopularSearchesListView(generics.ListAPIView):
+    queryset = UserSearch.objects.all()
+    serializer_class = PopularSearchSerializer
+
+    def get_queryset(self):
+        return UserSearch.objects.values("search_text").annotate(count=Count("search_text")).order_by("-count")

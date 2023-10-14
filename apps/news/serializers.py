@@ -1,14 +1,8 @@
 from rest_framework import serializers
-from .models import (
-    NewsTag,
-    NewsCategory,
-    News,
-    NewsLike,
-    NewsComment,
-    NewsCommentReport,
-    NewsView,
-    BreakingNews,
-)
+from apps.common.choices import LikeStatusChoices
+from apps.news.models import (BreakingNews, News, NewsCategory, NewsComment,
+                              NewsCommentReport, NewsLike, NewsTag, NewsView)
+from apps.users.models import Profile
 
 
 class NewsTagSerializer(serializers.ModelSerializer):
@@ -24,33 +18,56 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    category = NewsCategorySerializer()
+    tags = NewsTagSerializer(many=True)
+    likes_dislikes = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
+    author = serializers.SerializerMethodField()
 
     class Meta:
         model = News
         fields = (
             "id",
             "cover",
-            "tag",
+            "tags",
             "category",
             "position",
             "status",
-            "type",
             "title",
+            "is_verified",
+            "style",
+            "type",
             "slug",
             "author",
             "desc",
+            "likes_dislikes",
+            "comments_count",
+            "date_time_in_word",
             "view_count",
             "created_at",
             "updated_at",
         )
 
+    def get_likes_dislikes(self, obj):
+        data = {
+            "likes_count": obj.news_like_to_news.filter(status=LikeStatusChoices.LIKED).count(),
+            "dislikes_count": obj.news_like_to_news.filter(status=LikeStatusChoices.DISLIKED).count(),
+        }
+        return data
+
+    def get_comments_count(self, obj):
+        return obj.news_comment_to_news.count()
+
+    def get_author(self, obj):
+        from apps.users.serializers import UserProfileSerializer
+        profile = Profile.objects.get(user=obj.author.id)
+        return UserProfileSerializer(profile).data
 
 
-
-class NewsLikeSerializer(serializers.ModelSerializer):
+class TimeLineNewsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NewsLike
-        fields = ("id", "user", "news")
+        model = News
+        fields = ("id", "title", "created_at")
 
 
 class NewsCommentSerializer(serializers.ModelSerializer):
@@ -62,12 +79,18 @@ class NewsCommentSerializer(serializers.ModelSerializer):
 class NewsCommentReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsCommentReport
-        fields = ("id", "user", "comment")
+        fields = ("id", "user", "comment", "text")
 
 
 class NewsViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsView
+        fields = ("id", "user", "news")
+
+
+class NewsLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsLike
         fields = ("id", "user", "news")
 
 

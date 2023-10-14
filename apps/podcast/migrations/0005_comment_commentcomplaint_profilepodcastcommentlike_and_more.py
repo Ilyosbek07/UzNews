@@ -6,133 +6,266 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0003_profile_info_en_profile_info_ru_profile_info_uz_and_more'),
-        ('podcast', '0004_alter_podcast_desc'),
+        ("users", "0003_profile_info_en_profile_info_ru_profile_info_uz_and_more"),
+        ("podcast", "0004_alter_podcast_desc"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('text', models.TextField(max_length=400, verbose_name='Text')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Is active')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='podcast/comments/', verbose_name='Image')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='replies', to='podcast.comment', verbose_name='Parent')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("text", models.TextField(max_length=400, verbose_name="Text")),
+                (
+                    "is_active",
+                    models.BooleanField(default=True, verbose_name="Is active"),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="podcast/comments/",
+                        verbose_name="Image",
+                    ),
+                ),
+                (
+                    "parent",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="replies",
+                        to="podcast.comment",
+                        verbose_name="Parent",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Podcast Comment',
-                'verbose_name_plural': 'Podcast Comments',
+                "verbose_name": "Podcast Comment",
+                "verbose_name_plural": "Podcast Comments",
             },
         ),
         migrations.CreateModel(
-            name='CommentComplaint',
+            name="CommentComplaint",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('text', models.TextField(max_length=400, verbose_name='Text')),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='complaints', to='podcast.comment', verbose_name='Comment')),
-                ('profile', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='podcast_comment_complaints', to='users.profile', verbose_name='Owner')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("text", models.TextField(max_length=400, verbose_name="Text")),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="complaints",
+                        to="podcast.comment",
+                        verbose_name="Comment",
+                    ),
+                ),
+                (
+                    "profile",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="podcast_comment_complaints",
+                        to="users.profile",
+                        verbose_name="Owner",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Podcast Comment Complaint',
-                'verbose_name_plural': 'Podcast Comment Complaints',
+                "verbose_name": "Podcast Comment Complaint",
+                "verbose_name_plural": "Podcast Comment Complaints",
             },
         ),
         migrations.CreateModel(
-            name='ProfilePodcastCommentLike',
+            name="ProfilePodcastCommentLike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('l', 'Liked'), ('d', 'Disliked'), ('n', 'Neutral')], default='n', max_length=1, verbose_name='Status')),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='profile_likes', to='podcast.comment', verbose_name='Comment')),
-                ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='podcast_comment_likes', to='users.profile', verbose_name='Profile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("l", "Liked"), ("d", "Disliked"), ("n", "Neutral")],
+                        default="n",
+                        max_length=1,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="profile_likes",
+                        to="podcast.comment",
+                        verbose_name="Comment",
+                    ),
+                ),
+                (
+                    "profile",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="podcast_comment_likes",
+                        to="users.profile",
+                        verbose_name="Profile",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Profile Podcast Comment Like',
-                'verbose_name_plural': 'Profile Podcast  Comment Likes',
-                'unique_together': {('profile', 'comment')},
+                "verbose_name": "Profile Podcast Comment Like",
+                "verbose_name_plural": "Profile Podcast  Comment Likes",
+                "unique_together": {("profile", "comment")},
             },
         ),
         migrations.CreateModel(
-            name='ProfilePodcastLike',
+            name="ProfilePodcastLike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('l', 'Liked'), ('d', 'Disliked'), ('n', 'Neutral')], default='n', max_length=1, verbose_name='Status')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("l", "Liked"), ("d", "Disliked"), ("n", "Neutral")],
+                        default="n",
+                        max_length=1,
+                        verbose_name="Status",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Profile Podcast Like',
-                'verbose_name_plural': 'Profile Podcast Likes',
+                "verbose_name": "Profile Podcast Like",
+                "verbose_name_plural": "Profile Podcast Likes",
             },
         ),
         migrations.RemoveField(
-            model_name='podcast',
-            name='desc',
+            model_name="podcast",
+            name="desc",
         ),
         migrations.RemoveField(
-            model_name='podcast',
-            name='dislike_count',
+            model_name="podcast",
+            name="dislike_count",
         ),
         migrations.RemoveField(
-            model_name='podcast',
-            name='like_count',
+            model_name="podcast",
+            name="like_count",
         ),
         migrations.AddField(
-            model_name='podcast',
-            name='body',
-            field=ckeditor_uploader.fields.RichTextUploadingField(default=None, verbose_name='Body'),
+            model_name="podcast",
+            name="body",
+            field=ckeditor_uploader.fields.RichTextUploadingField(
+                default=None, verbose_name="Body"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='podcast',
-            name='status',
-            field=models.CharField(choices=[('dr', 'Draft'), ('im', 'In moderation'), ('pb', 'Published')], default=None, max_length=2, verbose_name='Status'),
+            model_name="podcast",
+            name="status",
+            field=models.CharField(
+                choices=[("dr", "Draft"), ("im", "In moderation"), ("pb", "Published")],
+                default=None,
+                max_length=2,
+                verbose_name="Status",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='podcast',
-            name='subtitle',
-            field=models.CharField(default=None, max_length=255, verbose_name='Subtitle'),
+            model_name="podcast",
+            name="subtitle",
+            field=models.CharField(
+                default=None, max_length=255, verbose_name="Subtitle"
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='podcast',
-            name='slug',
-            field=models.SlugField(verbose_name='Slug'),
+            model_name="podcast",
+            name="slug",
+            field=models.SlugField(verbose_name="Slug"),
         ),
         migrations.DeleteModel(
-            name='UserPodcastPreference',
+            name="UserPodcastPreference",
         ),
         migrations.AddField(
-            model_name='profilepodcastlike',
-            name='podcast',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='profile_likes', to='podcast.podcast', verbose_name='Podcast'),
+            model_name="profilepodcastlike",
+            name="podcast",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="profile_likes",
+                to="podcast.podcast",
+                verbose_name="Podcast",
+            ),
         ),
         migrations.AddField(
-            model_name='profilepodcastlike',
-            name='profile',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='podcast_likes', to='users.profile', verbose_name='Profile'),
+            model_name="profilepodcastlike",
+            name="profile",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="podcast_likes",
+                to="users.profile",
+                verbose_name="Profile",
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='podcast',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='podcast.podcast', verbose_name='Podcast'),
+            model_name="comment",
+            name="podcast",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="comments",
+                to="podcast.podcast",
+                verbose_name="Podcast",
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='profile',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='podcast_comments', to='users.profile', verbose_name='Owner'),
+            model_name="comment",
+            name="profile",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="podcast_comments",
+                to="users.profile",
+                verbose_name="Owner",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='profilepodcastlike',
-            unique_together={('profile', 'podcast')},
+            name="profilepodcastlike",
+            unique_together={("profile", "podcast")},
         ),
     ]

@@ -1,14 +1,18 @@
-from django.utils.text import slugify
-
-from apps.users.models import User
 from django.db import models
-from apps.common.models import NewsBase, BaseModel, LikeBase, CommentBase, ReportBase
-from apps.news.choices import NewsPositionChoices, NewsTypeChoices, NewsStatusChoices
+from django.utils import timezone
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+
+from apps.common.models import (BaseModel, CommentBase, LikeBase, NewsBase,
+                                ReportBase)
+from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
+                               NewsStyleChoices, NewsTypeChoices)
 from apps.news.managers import NewsManager
+from apps.users.models import User
 
 
 class NewsTag(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(_("name of tag"))
 
     def __str__(self):
         return self.name
@@ -18,18 +22,20 @@ class NewsTag(models.Model):
 
 
 class NewsCategory(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(_("name of category"), max_length=255)
 
     def __str__(self):
         return self.name
 
 
 class News(NewsBase, BaseModel):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_to_news")
+    is_verified = models.BooleanField(blank=True)
     cover = models.ImageField(upload_to="news/cover_images/")
-    tag = models.ManyToManyField(NewsTag)
+    tags = models.ManyToManyField(NewsTag, related_name="news_to_tags")
     category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE)
     position = models.CharField(
+        _("position of news in main site page"),
         max_length=100,
         choices=NewsPositionChoices.choices,
         default=NewsPositionChoices.ORDINARY,
@@ -39,13 +45,17 @@ class News(NewsBase, BaseModel):
         choices=NewsStatusChoices.choices,
         default=NewsStatusChoices.DRAFT,
     )
-    type = models.CharField(
-        max_length=100, choices=NewsTypeChoices.choices, default=NewsTypeChoices.NEWS
+    type = models.CharField(max_length=100, choices=NewsTypeChoices.choices, default=NewsTypeChoices.NEWS)
+    style = models.CharField(
+        _("news appearing style in site"),
+        max_length=100,
+        choices=NewsStyleChoices.choices,
+        default=NewsStyleChoices.STYLE_1,
     )
     objects = NewsManager()
 
     class Meta:
-        verbose_name_plural = 'News'
+        verbose_name_plural = "News"
 
     def __str__(self):
         return self.title
@@ -56,13 +66,26 @@ class News(NewsBase, BaseModel):
         super().save(*args, **kwargs)
 
     @property
+    def date_time_in_word(self):
+        data = dict()
+        if self.created_at.date() == timezone.now().date():
+            time_difference_in_seconds = (timezone.now() - self.created_at).total_seconds()
+            if 3600 > int(time_difference_in_seconds) > 60:
+                data["minute"] = int((int(time_difference_in_seconds) / 60))
+            elif 86400 >= int(time_difference_in_seconds) >= 3600:
+                data["hour"] = int(time_difference_in_seconds / 3600)
+            else:
+                data["today"] = self.created_at.strftime("%H:%M")
+        return data or self.created_at
+
+    @property
     def view_count(self):
         return NewsView.objects.filter(news__id=self.id).count()
-        
+
 
 class NewsLike(LikeBase):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_like_to_news")
 
     def __str__(self):
         return self.news.title
@@ -70,7 +93,7 @@ class NewsLike(LikeBase):
 
 class NewsComment(CommentBase, BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_comment_to_news")
 
     def __str__(self):
         return self.text
@@ -81,12 +104,18 @@ class NewsCommentReport(ReportBase, BaseModel):
     comment = models.ForeignKey(NewsComment, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}"
+
+
+class NewsCancelReason(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    text = models.TextField(_("the reason of cancel"))
 
 
 class NewsView(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="news_view_to_news")
 
     def __str__(self):
         return self.news.title
@@ -99,7 +128,7 @@ class BreakingNews(BaseModel):
 
     class Meta:
         unique_together = ("id", "news")
-        verbose_name_plural = 'BreakingNews'
+        verbose_name_plural = "BreakingNews"
 
     def __str__(self):
         return self.title

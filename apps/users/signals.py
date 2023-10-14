@@ -1,7 +1,7 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from apps.users.models import Profile, User
+from apps.users.models import Profile, User, UserSearch
 
 
 @receiver(post_save, sender=User)

@@ -7,6 +7,11 @@ class NewsPositionChoices(models.TextChoices):
     ORDINARY = "ordinary", "Ordinary"
 
 
+class NewsStyleChoices(models.TextChoices):
+    STYLE_1 = "style 1", "Style 1"
+    STYLE_2 = "style 2", "Style 2"
+
+
 class NewsStatusChoices(models.TextChoices):
     DRAFT = "draft", "Draft"
     IN_MODERATION = "in moderation", "In moderation"
@@ -14,5 +19,5 @@ class NewsStatusChoices(models.TextChoices):
 
 
 class NewsTypeChoices(models.TextChoices):
-    SPECIAL = "special report", "Special Report"
+    ARTICLE = "article", "Article"
     NEWS = "news", "News"

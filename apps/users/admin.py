@@ -1,16 +1,16 @@
 from django.contrib import admin
-from apps.users.models import User, Profile
+from apps.users.models import User, Profile, UserSearch
+
+admin.site.register(UserSearch)
 
 
 @admin.register(User)
 class AdvertisingAdmin(admin.ModelAdmin):
-    list_display = ("id", "phone_number", "email")  # Customize the list display fields
-    list_filter = ("phone_number",)  # Add filtering options based on 'type'
-    search_fields = ("phone_number",)  # Enable search by 'type'
+    list_display = ("id", "phone_number", "email")
+    list_filter = ("phone_number",)
+    search_fields = ("phone_number",)
 
 
 @admin.register(Profile)
 class AdvertisingAdmin(admin.ModelAdmin):
-    list_display = ("id", "surname", "role")
-    list_filter = ("surname",)
-    search_fields = ("surname",)
+    list_display = ("id", "role")

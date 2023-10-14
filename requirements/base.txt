@@ -10,3 +10,6 @@ djangorestframework-simplejwt
 pillow
 django-phonenumber-field[phonenumberslite]
 django-modeltranslation
+django-ckeditor
+django-filter
+requests

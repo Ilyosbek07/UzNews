@@ -1,16 +1,6 @@
 from django.contrib import admin
 
-from .models import (Category, Comment, CommentLike, Review, ReviewLiked,
-                     ReviewView, Tag)
-
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    list_filter = ("name",)
-    search_fields = ("name",)
-    verbose_name = "Tag"
-    verbose_name_plural = "Tags"
+from apps.review.models import Category, Comment, CommentLike, Review
 
 
 @admin.register(Category)
@@ -20,6 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("name", "slug")
     verbose_name = "Podcast Category"
     verbose_name_plural = "Podcast Categories"
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Review)
@@ -30,22 +21,6 @@ class ReviewAdmin(admin.ModelAdmin):
     verbose_name = "Review"
     verbose_name_plural = "Reviews"
     prepopulated_fields = {"slug": ("title",)}
-
-
-@admin.register(ReviewLiked)
-class ReviewLikedAdmin(admin.ModelAdmin):
-    list_display = ("user", "review")
-    list_filter = ("user", "review")
-    verbose_name = "Review Like"
-    verbose_name_plural = "Review Likes"
-
-
-@admin.register(ReviewView)
-class ReviewViewAdmin(admin.ModelAdmin):
-    list_display = ("user", "review")
-    list_filter = ("user", "review")
-    verbose_name = "Review View"
-    verbose_name_plural = "Review Views"
 
 
 @admin.register(Comment)

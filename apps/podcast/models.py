@@ -53,10 +53,18 @@ class Podcast(BaseModel):
     )
     tags = models.ManyToManyField(Tag, verbose_name=_("Tags"), related_name="podcasts")
     author = models.ForeignKey(
-        Profile, null=True, blank=True, on_delete=models.SET_NULL, related_name="podcasts", verbose_name=_("Author")
+        Profile,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="podcasts",
+        verbose_name=_("Author"),
     )
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="podcasts", verbose_name=_("Category")
+        Category,
+        on_delete=models.CASCADE,
+        related_name="podcasts",
+        verbose_name=_("Category"),
     )
 
     class Meta:
@@ -84,9 +92,19 @@ class Comment(BaseModel):
         related_name="podcast_comments",
         verbose_name=_("Owner"),
     )
-    podcast = models.ForeignKey(Podcast, on_delete=models.CASCADE, related_name="comments", verbose_name=_("Podcast"))
+    podcast = models.ForeignKey(
+        Podcast,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name=_("Podcast"),
+    )
     parent = models.ForeignKey(
-        to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name="replies", verbose_name=_("Parent")
+        to="self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="replies",
+        verbose_name=_("Parent"),
     )
 
     class Meta:
@@ -107,7 +125,12 @@ class CommentComplaint(BaseModel):
         related_name="podcast_comment_complaints",
         verbose_name=_("Owner"),
     )
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="complaints", verbose_name=_("Comment"))
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="complaints",
+        verbose_name=_("Comment"),
+    )
 
     class Meta:
         verbose_name = _("Podcast Comment Complaint")
