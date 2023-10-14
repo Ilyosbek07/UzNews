@@ -52,7 +52,7 @@ CUSTOM_APPS = [
     "apps.podcast",
     "apps.news",
     "apps.photoreport",
-    "apps.review"
+    "apps.review",
 ]
 
 THIRD_PARTY_APPS = ["rest_framework", "drf_yasg", "corsheaders", "modeltranslation", "ckeditor", "ckeditor_uploader"]
@@ -194,3 +194,5 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 AUTH_USER_MODEL = "users.User"
+
+TIME_ZONE = "Asia/Tashkent"

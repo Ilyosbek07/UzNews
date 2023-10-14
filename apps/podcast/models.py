@@ -1,12 +1,13 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel
 from apps.users.models import Profile
 
-from .choices import LikeStatusChoices, PodcastStatusChoices
+from .choices import PodcastStatusChoices
 
 
 class Tag(BaseModel):
@@ -22,12 +23,17 @@ class Tag(BaseModel):
 
 class Category(BaseModel):
     name = models.CharField(_("Name"), max_length=100)
-    slug = models.SlugField(_("Slug"))
+    slug = models.SlugField(_("Slug"), blank=True)
     icon = models.FileField(_("Icon"), upload_to="podcast/icons/")
 
     class Meta:
         verbose_name = _("Podcast Category")
         verbose_name_plural = _("Podcast Categories")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -35,10 +41,9 @@ class Category(BaseModel):
 
 class Podcast(BaseModel):
     title = models.CharField(_("Title"), max_length=255)
-    slug = models.SlugField(_("Slug"))
+    slug = models.SlugField(_("Slug"), blank=True)
     subtitle = models.CharField(_("Subtitle"), max_length=255)
     body = RichTextUploadingField(_("Body"))
-    view_count = models.PositiveIntegerField(_("View count"), default=0)
     status = models.CharField(_("Status"), max_length=2, choices=PodcastStatusChoices.choices)
     cover = models.ImageField(_("Cover"), upload_to="podcast/covers/", default="default_podcast_cover.png")
     file = models.FileField(
@@ -58,28 +63,13 @@ class Podcast(BaseModel):
         verbose_name = _("Podcast")
         verbose_name_plural = _("Podcasts")
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
-
-
-class ProfilePodcastLike(BaseModel):
-    status = models.CharField(
-        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
-    )
-    profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="podcast_likes", verbose_name=_("Profile")
-    )
-    podcast = models.ForeignKey(
-        Podcast, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Podcast")
-    )
-
-    class Meta:
-        unique_together = ["profile", "podcast"]
-        verbose_name = _("Profile Podcast Like")
-        verbose_name_plural = _("Profile Podcast Likes")
-
-    def __str__(self):
-        return f"{self.profile.__str__()}: {self.podcast.__str__()}"
 
 
 class Comment(BaseModel):
@@ -125,23 +115,3 @@ class CommentComplaint(BaseModel):
 
     def __str__(self):
         return self.text
-
-
-class ProfilePodcastCommentLike(BaseModel):
-    status = models.CharField(
-        _("Status"), max_length=1, choices=LikeStatusChoices.choices, default=LikeStatusChoices.NEUTRAL
-    )
-    profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="podcast_comment_likes", verbose_name=_("Profile")
-    )
-    comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="profile_likes", verbose_name=_("Comment")
-    )
-
-    class Meta:
-        unique_together = ["profile", "comment"]
-        verbose_name = _("Profile Podcast Comment Like")
-        verbose_name_plural = _("Profile Podcast  Comment Likes")
-
-    def __str__(self):
-        return f"{self.profile.__str__()}: {self.comment.__str__()}"

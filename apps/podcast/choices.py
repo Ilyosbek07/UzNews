@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class PodcastStatusChoices(TextChoices):
     DRAFT = "dr", _("Draft")
-    INMODERATION = "im", _("In moderation")
+    IN_MODERATION = "im", _("In moderation")
     PUBLISHED = "pb", _("Published")
 
 

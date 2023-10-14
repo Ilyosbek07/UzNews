@@ -1,34 +1,29 @@
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, generics
+from rest_framework.permissions import IsAdminUser
 
-from .utils import perform_liked, perform_disliked
-from .models import Podcast, UserPodcastPreference
-
-class PodcastLikedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, pk, format=None):
-        profile = self.request.user.profile
-        try:
-            content = Podcast.objects.get(pk=pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        perform_liked(profile, content, UserPodcastPreference)
-        return Response(status=status.HTTP_200_OK)
+from apps.podcast.choices import PodcastStatusChoices
+from apps.podcast.models import Podcast, Tag
+from apps.podcast.serializers import PodcastListSerializer, TagSerializer
 
 
-class PodcastDislikedView(APIView):
-    permission_classes = [IsAuthenticated]
+class TagListView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
-    def get(self, request, pk, format=None):
-        profile = self.request.user.profile
-        try:
-            content = Podcast.objects.get(pk=pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        perform_disliked(profile, content, UserPodcastPreference)
-        return Response(status=status.HTTP_200_OK)
-    
+
+class TagCreateView(generics.CreateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [IsAdminUser]
+
+
+class NewPodcastsView(generics.ListAPIView):
+    queryset = Podcast.objects.all()
+    serializer_class = PodcastListSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ("title",)
+    filterset_fields = ("tags", "category")
+
+    def get_queryset(self):
+        return super().get_queryset().filter(status=PodcastStatusChoices.PUBLISHED).order_by("-created_at")[:10]
