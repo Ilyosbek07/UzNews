@@ -150,8 +150,8 @@ class ContentView(BaseModel):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        related_name="content_view",
         verbose_name=_("Content view"),
+        related_name="%(app_label)s_%(class)s_related",
         null=True,
         blank=True,
     )
@@ -162,7 +162,7 @@ class ContentView(BaseModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="count_view",
+        related_name="%(app_label)s_%(class)s_related",
         verbose_name=_("User"),
     )
     device_id = models.CharField(
@@ -211,7 +211,7 @@ class ContentLike(BaseModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="count_like",
+        related_name="%(app_label)s_%(class)s_related",
         verbose_name=_("User"),
     )
 
