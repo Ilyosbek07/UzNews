@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel
+from apps.common.models import BaseModel, NewsBase
 from apps.news.choices import (NewsPositionChoices, NewsStatusChoices,
                                NewsStyleChoices, NewsTypeChoices)
 from apps.news.managers import NewsManager
