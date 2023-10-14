@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.common.models import BaseModel, NewsBase, Tag
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
-from apps.users.models import Profile, User
+from apps.users.models import User
 
 
 class Interview(BaseModel, NewsBase):

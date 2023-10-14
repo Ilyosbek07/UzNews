@@ -13,4 +13,6 @@ django-modeltranslation
 django-ckeditor
 django-filter
 requests
-django-auditlogog==2.7.0
+django-auditlog
+
+
