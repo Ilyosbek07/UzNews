@@ -4,17 +4,18 @@ from rest_framework.permissions import IsAdminUser
 
 from apps.podcast.choices import PodcastStatusChoices
 from apps.podcast.models import Podcast, Tag
-from apps.podcast.serializers import PodcastListSerializer, TagSerializer
+from apps.podcast.serializers import (PodcastListSerializer,
+                                      PodcastTagSerializer)
 
 
-class TagListView(generics.ListAPIView):
+class PodcastTagListView(generics.ListAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    serializer_class = PodcastTagSerializer
 
 
-class TagCreateView(generics.CreateAPIView):
+class PodcastTagCreateView(generics.CreateAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    serializer_class = PodcastTagSerializer
     permission_classes = [IsAdminUser]
 
 

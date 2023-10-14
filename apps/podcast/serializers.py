@@ -6,19 +6,19 @@ from apps.podcast.utils import time_difference_in_words
 from apps.users.models import Profile
 
 
-class TagSerializer(serializers.ModelSerializer):
+class PodcastTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ("id", "name")
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class PodcastCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("id", "name", "slug", "icon")
 
 
-class ProfileSerializer(serializers.ModelSerializer):
+class PodcastProfileSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
 
     class Meta:
@@ -30,8 +30,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         return f"{user.last_name} {user.first_name}"
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
+class PodcastCommentSerializer(serializers.ModelSerializer):
+    profile = PodcastProfileSerializer()
     replies = serializers.SerializerMethodField()
 
     class Meta:
@@ -39,12 +39,12 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ("id", "profile", "image", "text", "replies")
 
     def get_replies(self, obj):
-        return CommentSerializer(obj.replies.filter(is_active=True), many=True).data
+        return PodcastCommentSerializer(obj.replies.filter(is_active=True), many=True).data
 
 
 class PodcastListSerializer(serializers.ModelSerializer):
     created_time_in_words = serializers.SerializerMethodField()
-    category = CategorySerializer()
+    category = PodcastCategorySerializer()
 
     class Meta:
         model = Podcast
