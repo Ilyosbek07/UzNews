@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import PodcastDislikedView, PodcastLikedView
+from .views import NewPodcastsView, PodcastTagCreateView, PodcastTagListView
 
 urlpatterns = [
-    path("liked/<int:pk>/", PodcastLikedView.as_view(), name="podcast_liked"),
-    path("disliked/<int:pk>/", PodcastDislikedView.as_view(), name="podcast_disliked"),
+    path("tags/", PodcastTagListView.as_view(), name="tags_list"),
+    path("tags/create/", PodcastTagCreateView.as_view(), name="tag_create"),
+    path("podcasts/new/", NewPodcastsView.as_view(), name="new_podcasts_list"),
 ]
