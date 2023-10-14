@@ -41,4 +41,3 @@ class UserAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("refresh", response.data)
         self.assertIn("access", response.data)
-

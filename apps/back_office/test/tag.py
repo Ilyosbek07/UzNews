@@ -11,14 +11,10 @@ from apps.users.models import User, Profile
 class BackOfficeTagTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
-            phone_number='+998935036638',
-            password='new_pass',
+            phone_number="+998935036638",
+            password="new_pass",
         )
-        self.profile = Profile.objects.create(
-            user=self.user,
-            info='User info',
-            role=Role.author
-        )
+        self.profile = Profile.objects.create(user=self.user, info="User info", role=Role.author)
 
         self.tag = Tag.objects.create(name="Tag 1")
 
@@ -40,6 +36,7 @@ class BackOfficeTagTestCase(APITestCase):
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Tag.objects.count(), 2)
+
     #
     # def test_interview_put(self):
     #     data = {
@@ -82,4 +79,6 @@ class BackOfficeTagTestCase(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Interview.objects.count(), 0)
+
+
 #

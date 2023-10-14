@@ -16,16 +16,12 @@ class NewsTestCase(APITestCase):
             phone_number="+998901234567",
             first_name="test_user",
         )
-        self.category = NewsCategory.objects.create(
-            name='News Category'
-        )
+        self.category = NewsCategory.objects.create(name="News Category")
         self.uploaded_file = SimpleUploadedFile(
-            "test_file.txt",
-            b"Test content for the file",
-            content_type="text/plain"
+            "test_file.txt", b"Test content for the file", content_type="text/plain"
         )
         self.news = News.objects.create(
-            title='News Title',
+            title="News Title",
             author=self.user,
             is_verified=True,
             cover=self.uploaded_file,
@@ -50,4 +46,6 @@ class NewsTestCase(APITestCase):
     #     response = self.client.get(url)
     #     self.assertEqual(response.status_code, 200)
     #     self.assertEqual(Interview.objects.count(), 1)
+
+
 #

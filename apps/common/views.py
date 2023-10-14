@@ -4,7 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from apps.common.models import Advertising, SocialMedia, Tag
-from apps.common.serializers import AdvertisingSerializer, SocialMediaSerializer, TagSerializer
+from apps.common.serializers import (
+    AdvertisingSerializer,
+    SocialMediaSerializer,
+    TagSerializer,
+)
 
 
 class AdvertisingListAPIView(generics.ListAPIView):
@@ -24,7 +28,7 @@ class TagListAPIView(generics.ListAPIView):
 
 @api_view(['GET'])
 def get_exchange_rate(request):
-    response = requests.get('https://nbu.uz/uz/exchange-rates/json/')
+    response = requests.get("https://nbu.uz/uz/exchange-rates/json/")
     if response.status_code == 200:
         return Response(status=status.HTTP_200_OK, data=response.json())
     return Response(status=status.HTTP_404_NOT_FOUND)

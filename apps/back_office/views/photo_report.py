@@ -3,8 +3,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from apps.back_office.permissions import IsAuthor
-from apps.back_office.serializers.photoreport import PhotoReportListSerializer, PhotoReportDetailSerializer, \
-    PhotoReportSerializer
+from apps.back_office.serializers.photoreport import (
+    PhotoReportListSerializer,
+    PhotoReportDetailSerializer,
+    PhotoReportSerializer,
+)
 from apps.photoreport.models import PhotoReport
 
 

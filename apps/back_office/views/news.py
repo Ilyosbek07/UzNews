@@ -15,10 +15,12 @@ class NewsListAPIView(generics.ListAPIView):
     filterset_class = NewsFilter
     permission_classes = (IsAuthenticated, IsAuthor)
 
+
 class NewsRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = BackOfficeNewsSerializer
     queryset = News.objects.all()
     permission_classes = (IsAuthenticated, IsAuthor)
+
 
 class NewsCreateAPIView(generics.CreateAPIView):
     serializer_class = BackOfficeNewsSerializer

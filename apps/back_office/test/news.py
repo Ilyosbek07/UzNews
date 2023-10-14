@@ -10,19 +10,13 @@ from apps.users.models import User, Profile
 class BackOfficeNewsTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
-            phone_number='+998935036638',
-            password='new_pass',
+            phone_number="+998935036638",
+            password="new_pass",
         )
-        self.profile = Profile.objects.create(
-            user=self.user,
-            info='User info',
-            role=Role.author
-        )
+        self.profile = Profile.objects.create(user=self.user, info="User info", role=Role.author)
         self.uploaded_file_png = SimpleUploadedFile("cover.jpg", b"file_content", content_type="image/jpeg")
 
-        self.category = NewsCategory.objects.create(
-            name='Cat 1'
-        )
+        self.category = NewsCategory.objects.create(name="Cat 1")
         self.news = News.objects.create(
             title="Title",
             style=NewsStyleChoices.STYLE_1,
@@ -31,7 +25,7 @@ class BackOfficeNewsTestCase(APITestCase):
             is_verified=True,
             cover=self.uploaded_file_png,
             type=NewsTypeChoices.NEWS,
-            category=self.category
+            category=self.category,
         )
         self.tag = NewsTag.objects.create(name="Tag 1")
 
@@ -71,7 +65,7 @@ class BackOfficeNewsTestCase(APITestCase):
             "is_verified": True,
             "cover": self.uploaded_file_png,
             "type": NewsTypeChoices.NEWS,
-            "category": self.category
+            "category": self.category,
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 201)
@@ -115,10 +109,10 @@ class BackOfficeNewsTestCase(APITestCase):
             "title": "New Title",
             "author": self.user.id,
             "style": NewsStyleChoices.STYLE_1,
-            "cover": 'test.png',
+            "cover": "test.png",
             "type": NewsTypeChoices.NEWS,
             "category": self.category,
-            'tags': [self.tag.id]
+            "tags": [self.tag.id],
         }
         response = self.client.put(url, data=data)
         self.assertEqual(response.status_code, 200)

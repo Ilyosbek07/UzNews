@@ -35,7 +35,9 @@ class Interview(BaseModel, NewsBase):
         verbose_name = "Interview"
         verbose_name_plural = "Interviews"
 
+
 auditlog.register(Interview)
+
 
 class Comment(BaseModel):
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE, verbose_name=_("Interview"))

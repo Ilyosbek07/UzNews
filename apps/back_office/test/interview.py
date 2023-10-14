@@ -11,14 +11,10 @@ from apps.users.models import User, Profile
 class BackOfficeInterviewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_superuser(
-            phone_number='+998935036638',
-            password='new_pass',
+            phone_number="+998935036638",
+            password="new_pass",
         )
-        self.profile = Profile.objects.create(
-            user=self.user,
-            info='User info',
-            role=Role.author
-        )
+        self.profile = Profile.objects.create(user=self.user, info="User info", role=Role.author)
 
         self.interview = Interview.objects.create(
             title="Title",
