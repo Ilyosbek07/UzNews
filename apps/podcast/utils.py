@@ -1,4 +1,9 @@
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+from rest_framework import status
+
+from apps.common.choices import LikeStatusChoices
+from apps.common.models import ContentLike
 
 
 def time_difference_in_words(created_time):
@@ -73,3 +78,29 @@ def time_difference_in_words(created_time):
             return "a year ago"
         else:
             return f"{numbers_dict[units]} years ago"
+
+
+def perform_object_liked_disliked(object_id, ObjectModel, queryset, user, liked):
+    try:
+        queryset.get(pk=object_id)
+    except Exception as e:
+        return status.HTTP_404_NOT_FOUND
+    if liked:
+        like_status = LikeStatusChoices.LIKED
+    else:
+        like_status = LikeStatusChoices.DISLIKED
+    like = ContentLike.objects.filter(
+        content_type=ContentType.objects.get_for_model(ObjectModel), object_id=object_id, user=user
+    )
+    if like.exists():
+        like = like.first()
+        like.status = like_status
+    else:
+        like = ContentLike.objects.create(
+            content_type=ContentType.objects.get_for_model(ObjectModel),
+            object_id=object_id,
+            user=user,
+            status=like_status,
+        )
+    like.save()
+    return status.HTTP_200_OK

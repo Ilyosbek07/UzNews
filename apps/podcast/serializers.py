@@ -1,7 +1,9 @@
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import BooleanField, Case, ExpressionWrapper, When
 from rest_framework import serializers
 
-from apps.common.models import ContentView
+from apps.common.choices import LikeStatusChoices
+from apps.common.models import ContentLike, ContentView
 from apps.podcast.models import Category, Comment, Podcast, Tag
 from apps.podcast.utils import time_difference_in_words
 from apps.users.models import Profile
@@ -34,13 +36,35 @@ class PodcastProfileSerializer(serializers.ModelSerializer):
 class PodcastCommentSerializer(serializers.ModelSerializer):
     profile = PodcastProfileSerializer()
     replies = serializers.SerializerMethodField()
+    like_dislike_count = serializers.SerializerMethodField()
+    is_mine = serializers.BooleanField()
 
     class Meta:
         model = Comment
-        fields = ("id", "profile", "image", "text", "replies")
+        fields = ("id", "profile", "image", "text", "replies", "like_dislike_count", "is_mine")
 
     def get_replies(self, obj):
         return PodcastCommentSerializer(obj.replies.filter(is_active=True), many=True).data
+
+    def get_like_dislike_count(self, obj):
+        like_dislike = ContentLike.objects.filter(
+            content_type=ContentType.objects.get_for_model(Comment), object_id=obj.id
+        )
+        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
+        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
+        return {"like": like_count, "dislike": dislike_count}
+
+
+class PodcastCommentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("id", "text", "image", "parent")
+
+
+class PodcastCommentComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("id", "text")
 
 
 class PodcastPodcastListSerializer(serializers.ModelSerializer):
@@ -66,9 +90,7 @@ class PodcastPodcastListSerializer(serializers.ModelSerializer):
         return time_difference_in_words(obj.created_at)
 
     def get_view_count(self, obj):
-        return ContentView.objects.filter(
-            content_type=ContentType.objects.get_for_model(Podcast), object_id=obj.id
-        ).count()
+        return obj.get_view_count()
 
 
 class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
@@ -78,6 +100,7 @@ class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
     created_time_in_words = serializers.SerializerMethodField()
     category = PodcastCategorySerializer()
     view_count = serializers.SerializerMethodField()
+    like_dislike_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Podcast
@@ -103,22 +126,39 @@ class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
             "category",
             "comments",
             "view_count",
+            "like_dislike_count",
             "created_time_in_words",
         )
 
     def get_comments(self, obj):
-        return PodcastCommentSerializer(obj.comments.all(), many=True).data
+        user = self.context["user"]
+        try:
+            profile = user.profile.first()
+        except Exception as e:
+            profile = None
+        comments = obj.comments.filter(is_active=True).annotate(
+            is_mine=ExpressionWrapper(
+                Case(When(profile=profile, then=True), default=False), output_field=BooleanField()
+            )
+        )
+        return PodcastCommentSerializer(comments, many=True).data
 
     def get_created_time_in_words(self, obj):
         return time_difference_in_words(obj.created_at)
 
     def get_view_count(self, obj):
-        count = ContentView.objects.filter(
-            content_type=ContentType.objects.get_for_model(Podcast), object_id=obj.id
-        ).count()
+        count = obj.get_view_count()
         user = self.context["user"]
         device_id = self.context["device_id"]
         ContentView.objects.get_or_create(
             content_type=ContentType.objects.get_for_model(Podcast), object_id=obj.id, user=user, device_id=device_id
         )
         return count
+
+    def get_like_dislike_count(self, obj):
+        like_dislike = ContentLike.objects.filter(
+            content_type=ContentType.objects.get_for_model(Podcast), object_id=obj.id
+        )
+        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
+        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
+        return {"like": like_count, "dislike": dislike_count}
