@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Comment, CommentComplaint, Podcast
+from .models import Category, Comment, CommentComplaint, Podcast, Tag
 
 
 class PodcastAdmin(admin.ModelAdmin):
@@ -18,7 +18,8 @@ class CommentAdmin(admin.ModelAdmin):
 class CommentComplaintAdmin(admin.ModelAdmin):
     readonly_fields = ["comment", "profile", "text"]
 
-
+admin.site.register(Tag)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Podcast, PodcastAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(CommentComplaint, CommentComplaintAdmin)

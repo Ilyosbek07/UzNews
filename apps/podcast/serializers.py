@@ -43,7 +43,7 @@ class PodcastCommentSerializer(serializers.ModelSerializer):
         return PodcastCommentSerializer(obj.replies.filter(is_active=True), many=True).data
 
 
-class PodcastListSerializer(serializers.ModelSerializer):
+class PodcastPodcastListSerializer(serializers.ModelSerializer):
     created_time_in_words = serializers.SerializerMethodField()
     category = PodcastCategorySerializer()
     view_count = serializers.SerializerMethodField()
@@ -71,7 +71,7 @@ class PodcastListSerializer(serializers.ModelSerializer):
         ).count()
 
 
-class PodcastDetailSerializer(serializers.ModelSerializer):
+class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
     author = PodcastProfileSerializer()
     tags = PodcastTagSerializer(many=True)
     comments = serializers.SerializerMethodField()

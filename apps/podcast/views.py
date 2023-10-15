@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAdminUser
 
 from apps.podcast.choices import PodcastStatusChoices
 from apps.podcast.models import Podcast, Tag
-from apps.podcast.serializers import (PodcastDetailSerializer,
-                                      PodcastListSerializer,
+from apps.podcast.serializers import (PodcastPodcastDetailSerializer,
+                                      PodcastPodcastListSerializer,
                                       PodcastTagSerializer)
 
 
@@ -24,7 +24,7 @@ class PodcastTagCreateView(generics.CreateAPIView):
 
 class NewPodcastsView(generics.ListAPIView):
     queryset = Podcast.objects.all()
-    serializer_class = PodcastListSerializer
+    serializer_class = PodcastPodcastListSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ("title",)
     filterset_fields = ("tags", "category")
@@ -35,7 +35,7 @@ class NewPodcastsView(generics.ListAPIView):
 
 class PodcastDetailView(generics.RetrieveAPIView):
     queryset = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED)
-    serializer_class = PodcastDetailSerializer
+    serializer_class = PodcastPodcastDetailSerializer
     lookup_field = "slug"
 
     def get_serializer_context(self):
