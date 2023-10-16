@@ -1,14 +1,18 @@
 import uuid
 
+from django.db.models import BooleanField, Case, ExpressionWrapper, When
+from django.http import QueryDict
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.podcast.choices import PodcastStatusChoices
+from apps.podcast.filters import filter_comments
 from apps.podcast.models import Comment, CommentComplaint, Podcast, Tag
 from apps.podcast.serializers import (PodcastCommentComplaintSerializer,
                                       PodcastCommentDetailSerializer,
+                                      PodcastCommentSerializer,
                                       PodcastPodcastDetailSerializer,
                                       PodcastPodcastListSerializer,
                                       PodcastTagSerializer)
@@ -66,6 +70,39 @@ class PodcastDetailView(generics.RetrieveAPIView):
         return context
 
 
+class PodcastCommentsView(generics.ListAPIView):
+    queryset = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED)
+    serializer_class = PodcastCommentSerializer
+
+    def get_queryset(self):
+        try:
+            podcast = self.queryset.get(pk=self.kwargs.get("podcast_id"))
+            profile = self.request.user.profile.first()
+        except Exception as e:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        queryset = (
+            podcast.comments.filter(is_active=True)
+            .annotate(
+                is_mine=ExpressionWrapper(
+                    Case(When(profile=profile, then=True), default=False), output_field=BooleanField()
+                )
+            )
+            .order_by("-created_at")
+        )
+        filter_type = self.request.GET.get("filter_type")
+        return filter_comments(queryset, filter_type)
+
+    def list(self, request, podcast_id, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 class PodcastLikedView(generics.RetrieveAPIView):
     queryset = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED)
     permission_classes = [IsAuthenticated]
@@ -99,7 +136,7 @@ class CommentCreateView(generics.CreateAPIView):
 
     def post(self, request, podcast_id, *args, **kwargs):
         try:
-            podcast = Podcast.objects.get(pk=podcast_id)
+            podcast = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED, pk=podcast_id).first()
             profile = self.request.user.profile.first()
         except Exception as e:
             return Response(status=status.HTTP_404_NOT_FOUND)

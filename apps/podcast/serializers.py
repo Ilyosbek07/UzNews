@@ -1,5 +1,4 @@
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import BooleanField, Case, ExpressionWrapper, When
 from rest_framework import serializers
 
 from apps.common.choices import LikeStatusChoices
@@ -47,12 +46,7 @@ class PodcastCommentSerializer(serializers.ModelSerializer):
         return PodcastCommentSerializer(obj.replies.filter(is_active=True), many=True).data
 
     def get_like_dislike_count(self, obj):
-        like_dislike = ContentLike.objects.filter(
-            content_type=ContentType.objects.get_for_model(Comment), object_id=obj.id
-        )
-        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
-        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
-        return {"like": like_count, "dislike": dislike_count}
+        return obj.get_like_dislike_count()
 
 
 class PodcastCommentDetailSerializer(serializers.ModelSerializer):
@@ -96,7 +90,6 @@ class PodcastPodcastListSerializer(serializers.ModelSerializer):
 class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
     author = PodcastProfileSerializer()
     tags = PodcastTagSerializer(many=True)
-    comments = serializers.SerializerMethodField()
     created_time_in_words = serializers.SerializerMethodField()
     category = PodcastCategorySerializer()
     view_count = serializers.SerializerMethodField()
@@ -124,24 +117,10 @@ class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
             "tags",
             "author",
             "category",
-            "comments",
             "view_count",
             "like_dislike_count",
             "created_time_in_words",
         )
-
-    def get_comments(self, obj):
-        user = self.context["user"]
-        try:
-            profile = user.profile.first()
-        except Exception as e:
-            profile = None
-        comments = obj.comments.filter(is_active=True).annotate(
-            is_mine=ExpressionWrapper(
-                Case(When(profile=profile, then=True), default=False), output_field=BooleanField()
-            )
-        )
-        return PodcastCommentSerializer(comments, many=True).data
 
     def get_created_time_in_words(self, obj):
         return time_difference_in_words(obj.created_at)

@@ -5,7 +5,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel, ContentView
+from apps.common.choices import LikeStatusChoices
+from apps.common.models import BaseModel, ContentLike, ContentView
 from apps.users.models import Profile
 
 from .choices import PodcastStatusChoices
@@ -112,6 +113,14 @@ class Comment(BaseModel):
     class Meta:
         verbose_name = _("Podcast Comment")
         verbose_name_plural = _("Podcast Comments")
+
+    def get_like_dislike_count(self):
+        like_dislike = ContentLike.objects.filter(
+            content_type=ContentType.objects.get_for_model(Comment), object_id=self.id
+        )
+        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
+        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
+        return {"like": like_count, "dislike": dislike_count, "total": like_count + dislike_count}
 
     def __str__(self):
         return self.text

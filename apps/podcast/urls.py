@@ -3,8 +3,8 @@ from django.urls import path
 from .views import (CommentComplaintCreateView, CommentCreateView,
                     CommentDislikedView, CommentLikedView,
                     MostCommentedPodcastsView, MostViewedPodcastsView,
-                    NewPodcastsView, PodcastDetailView, PodcastDislikedView,
-                    PodcastLikedView, PodcastTagListView)
+                    NewPodcastsView, PodcastCommentsView, PodcastDetailView,
+                    PodcastDislikedView, PodcastLikedView, PodcastTagListView)
 
 urlpatterns = [
     path("tags/", PodcastTagListView.as_view(), name="tags_list"),
@@ -22,4 +22,5 @@ urlpatterns = [
         CommentComplaintCreateView.as_view(),
         name="comment_complaint_create",
     ),
+    path("comments/podcast/<int:podcast_id>/", PodcastCommentsView.as_view(), name="podcast_comemnts"),
 ]
