@@ -1,10 +1,11 @@
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.contenttypes.models import ContentType
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.models import BaseModel, Category
+from apps.common.models import BaseModel, ContentView
 from apps.users.models import Profile
 
 from .choices import PodcastStatusChoices
@@ -66,6 +67,11 @@ class Podcast(BaseModel):
     class Meta:
         verbose_name = _("Podcast")
         verbose_name_plural = _("Podcasts")
+
+    def get_view_count(self):
+        return ContentView.objects.filter(
+            content_type=ContentType.objects.get_for_model(Podcast), object_id=self.id
+        ).count()
 
     def save(self, *args, **kwargs):
         if not self.slug:
