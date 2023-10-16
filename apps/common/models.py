@@ -1,13 +1,13 @@
 from ckeditor.fields import RichTextField
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.common.choices import Advertising_choices, ContentChoices, LikeStatusChoices
+from apps.common.choices import (Advertising_choices, ContentChoices,
+                                 LikeStatusChoices)
 from apps.users.models import User
-
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 class BaseModel(models.Model):
@@ -20,7 +20,7 @@ class BaseModel(models.Model):
 
 class NewsBase(models.Model):
     title = models.CharField(max_length=255, verbose_name=_("Title"))
-    slug = models.SlugField(default="", null=False, verbose_name=_("Slug"))
+    slug = models.SlugField(default="", null=False, verbose_name=_("Slug"), unique=True)
     author = None
     desc = RichTextField(verbose_name=_("Description"), default="")
     created_at = None
@@ -107,9 +107,7 @@ class Tag(BaseModel):
 class CountViewManager(models.Manager):
     def create_for_object(self, obj, user, device_id):
         content_type = ContentType.objects.get_for_model(obj)
-        return self.create(
-            content_type=content_type, object_id=obj.id, user=user, device_id=device_id
-        )
+        return self.create(content_type=content_type, object_id=obj.id, user=user, device_id=device_id)
 
 
 class ContentView(BaseModel):
@@ -153,9 +151,7 @@ class ContentView(BaseModel):
 class CountLikeManager(models.Manager):
     def create_for_object(self, obj, user, status):
         content_type = ContentType.objects.get_for_model(obj)
-        return self.create(
-            content_type=content_type, object_id=obj.id, user=user, status=status
-        )
+        return self.create(content_type=content_type, object_id=obj.id, user=user, status=status)
 
 
 class ContentLike(BaseModel):
@@ -169,9 +165,7 @@ class ContentLike(BaseModel):
     )
     object_id = models.PositiveIntegerField(verbose_name=_("Object id"))
     content_object = GenericForeignKey("content_type", "object_id")
-    status = models.CharField(
-        max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Like status")
-    )
+    status = models.CharField(max_length=10, choices=LikeStatusChoices.choices, verbose_name=_("Like status"))
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -193,9 +187,7 @@ class ContentLike(BaseModel):
 class CountReportManager(models.Manager):
     def create_for_object(self, obj, user, status):
         content_type = ContentType.objects.get_for_model(obj)
-        return self.create(
-            content_type=content_type, object_id=obj.id, user=user, status=status
-        )
+        return self.create(content_type=content_type, object_id=obj.id, user=user, status=status)
 
 
 class ContentReport(BaseModel):
@@ -230,9 +222,7 @@ class ContentReport(BaseModel):
 class CountCommentManager(models.Manager):
     def create_for_object(self, obj, user, status):
         content_type = ContentType.objects.get_for_model(obj)
-        return self.create(
-            content_type=content_type, object_id=obj.id, user=user, status=status
-        )
+        return self.create(content_type=content_type, object_id=obj.id, user=user, status=status)
 
 
 class ContentComment(BaseModel):
