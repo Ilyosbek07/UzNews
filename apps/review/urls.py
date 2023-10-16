@@ -1,13 +1,9 @@
-from apps.review.views import (
-    ReviewListAPIView,
-    ReviewDetailAPIView,
-    RelatedReviewAPIView,
-    CommentsListAPIView,
-    ReviewCommentCreateAPIView,
-    ReviewLikeDislikeAPIView,
-    CommentLikeDislikeAPIView,
-)
 from django.urls import path
+
+from apps.review.views import (CommentLikeDislikeAPIView, CommentsListAPIView,
+                               RelatedReviewAPIView,
+                               ReviewCommentCreateAPIView, ReviewDetailAPIView,
+                               ReviewLikeDislikeAPIView, ReviewListAPIView)
 
 urlpatterns = [
     path("list/", ReviewListAPIView.as_view(), name="review_list"),
@@ -16,12 +12,12 @@ urlpatterns = [
     path(
         "<slug:slug>/comments/list/",
         CommentsListAPIView.as_view(),
-        name="photo_report_comments",
+        name="review_comments",
     ),
     path(
         "<slug:slug>/comment/create",
         ReviewCommentCreateAPIView.as_view(),
-        name="comment_create",
+        name="review_comment_create",
     ),
     path(
         "<slug:slug>/like-dislike/",
