@@ -2,10 +2,10 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from apps.common.models import Tag
-from apps.interview.choices import StatusChoices, InterviewStyleStatusChoices
+from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
 from apps.interview.models import Interview
 from apps.users.choices import Role
-from apps.users.models import User, Profile
+from apps.users.models import Profile, User
 
 
 class BackOfficeInterviewTestCase(APITestCase):
@@ -15,15 +15,16 @@ class BackOfficeInterviewTestCase(APITestCase):
             password="new_pass",
         )
         self.profile = Profile.objects.create(user=self.user, info="User info", role=Role.author)
+        self.tag = Tag.objects.create(name="Tag 1")
 
         self.interview = Interview.objects.create(
             title="Title",
+            author=self.user,
             style_type=InterviewStyleStatusChoices.STYLE_1,
             status=StatusChoices.DRAFT,
             subtitle="Subtitle Test",
             video_url="https://www.figma.com/file/",
         )
-        self.tag = Tag.objects.create(name="Tag 1")
 
     def test_interview_list(self):
         data = {
@@ -55,6 +56,7 @@ class BackOfficeInterviewTestCase(APITestCase):
         url = reverse("back_interview_create")
         data = {
             "title": "New Interview",
+            "author": self.user.id,
             "subtitle": "New Subtitle",
             "status": "published",
             "video_url": "http://127.0.0.1:8000/swagger/",
@@ -100,6 +102,7 @@ class BackOfficeInterviewTestCase(APITestCase):
         )
         data = {
             "title": "New Title",
+            "author": self.user.id,
             "subtitle": "New Sub Title",
             "status": "published",
             "video_url": "http://127.0.0.1:8080/swagger/",

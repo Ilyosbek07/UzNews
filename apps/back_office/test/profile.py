@@ -2,9 +2,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apps.common.models import Tag
-from apps.interview.choices import StatusChoices, InterviewStyleStatusChoices
-from apps.interview.models import Interview
 from apps.users.choices import Role
 from apps.users.models import User, Profile
 

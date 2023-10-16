@@ -17,6 +17,7 @@ urlpatterns = [
     path("back-office/", include("apps.back_office.urls")),
     path("review/", include("apps.review.urls")),
     path("podcast/", include("apps.podcast.urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]
 
 urlpatterns += swagger_urlpatterns

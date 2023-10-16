@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from apps.interview.models import Interview
 
+# from auditlog.admin import
+
 
 @admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
