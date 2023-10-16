@@ -30,7 +30,7 @@ class Category(BaseModel):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -73,6 +73,14 @@ class Podcast(BaseModel):
         return ContentView.objects.filter(
             content_type=ContentType.objects.get_for_model(Podcast), object_id=self.id
         ).count()
+
+    def get_like_dislike_count(self):
+        like_dislike = ContentLike.objects.filter(
+            content_type=ContentType.objects.get_for_model(Podcast), object_id=self.id
+        )
+        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
+        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
+        return {"like": like_count, "dislike": dislike_count}
 
     def save(self, *args, **kwargs):
         if not self.slug:

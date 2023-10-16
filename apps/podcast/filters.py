@@ -2,9 +2,7 @@ from datetime import datetime, timedelta
 
 
 def filter_comments(queryset, filter_type):
-    if filter_type is None:
-        return queryset
-    elif filter_type == "this_week":
+    if filter_type == "this_week":
         start_date = datetime.now().date() - timedelta(days=7)
         end_date = datetime.now().date() + timedelta(days=1)
         return queryset.filter(created_at__range=[start_date, end_date])

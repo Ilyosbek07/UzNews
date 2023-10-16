@@ -1,8 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
-from apps.common.choices import LikeStatusChoices
-from apps.common.models import ContentLike, ContentView
+from apps.common.models import ContentView
 from apps.podcast.models import Category, Comment, Podcast, Tag
 from apps.podcast.utils import time_difference_in_words
 from apps.users.models import Profile
@@ -135,9 +134,4 @@ class PodcastPodcastDetailSerializer(serializers.ModelSerializer):
         return count
 
     def get_like_dislike_count(self, obj):
-        like_dislike = ContentLike.objects.filter(
-            content_type=ContentType.objects.get_for_model(Podcast), object_id=obj.id
-        )
-        like_count = like_dislike.filter(status=LikeStatusChoices.LIKED).count()
-        dislike_count = like_dislike.filter(status=LikeStatusChoices.DISLIKED).count()
-        return {"like": like_count, "dislike": dislike_count}
+        return obj.get_like_dislike_count()

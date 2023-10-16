@@ -1,7 +1,6 @@
 import uuid
 
 from django.db.models import BooleanField, Case, ExpressionWrapper, When
-from django.http import QueryDict
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, status
 from rest_framework.permissions import IsAuthenticated
@@ -79,6 +78,7 @@ class PodcastCommentsView(generics.ListAPIView):
             podcast = self.queryset.get(pk=self.kwargs.get("podcast_id"))
             profile = self.request.user.profile.first()
         except Exception as e:
+            print(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         queryset = (
             podcast.comments.filter(is_active=True)
@@ -101,6 +101,27 @@ class PodcastCommentsView(generics.ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class PodcastSuggestionsView(generics.ListAPIView):
+    queryset = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED)
+    serializer_class = PodcastPodcastListSerializer
+
+    def get_queryset(self):
+        try:
+            podcast_id = self.kwargs.get("podcast_id")
+            podcast = self.queryset.get(pk=podcast_id)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        category = podcast.category
+        queryset = self.queryset.filter(category=category).exclude(pk=podcast_id).order_by("-created_at")[:4]
+        found_len = len(queryset)
+        if found_len < 4:
+            queryset2 = self.queryset.exclude(category=category)
+            sorted(queryset2, key=lambda obj: obj.get_like_dislike_count()["like"], reverse=True)
+            queryset = list(queryset) + (queryset2[: 4 - found_len])
+        return queryset
 
 
 class PodcastLikedView(generics.RetrieveAPIView):
@@ -139,6 +160,7 @@ class CommentCreateView(generics.CreateAPIView):
             podcast = Podcast.objects.filter(status=PodcastStatusChoices.PUBLISHED, pk=podcast_id).first()
             profile = self.request.user.profile.first()
         except Exception as e:
+            print(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -156,6 +178,7 @@ class CommentComplaintCreateView(generics.CreateAPIView):
             comment = Comment.objects.filter(is_active=True).get(pk=comment_id)
             profile = self.request.user.profile.first()
         except Exception as e:
+            print(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
