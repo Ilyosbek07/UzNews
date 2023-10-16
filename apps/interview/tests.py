@@ -18,6 +18,7 @@ class InterviewTestCase(APITestCase):
         self.interview = Interview.objects.create(
             author=self.user,
             title="Intervire Title",
+            slug='interview-title',
             style_type=InterviewStyleStatusChoices.STYLE_1,
             status=StatusChoices.DRAFT,
             subtitle="Subtitle Test",
@@ -29,7 +30,7 @@ class InterviewTestCase(APITestCase):
         self.comment = Comment.objects.create(
             interview=self.interview,
             user=self.user,
-            text='Comment Text',
+            text="Comment Text",
             image=self.uploaded_file_png
         )
 
@@ -49,20 +50,35 @@ class InterviewTestCase(APITestCase):
         self.assertEqual(Interview.objects.count(), 1)
 
     def test_interview_comment_list(self):
-        url = reverse("interview_comments")
+        data = {
+            "phone_number": "+998901234567",
+            "password": "test_password",
+        }
+        url = reverse("login")
+        login = self.client.post(url, data, format="json")
+
+        access_token = login.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+
+        url = reverse("interview_comments",kwargs={"slug": self.interview.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["count"], 1)
 
     def test_interview_comment_create(self):
-        url = reverse('interview_comment_create', kwargs={
-            "slug": self.interview.slug
-        })
         data = {
-            "text": "Comment Text",
-            "user" : self.user
+            "phone_number": "+998901234567",
+            "password": "test_password",
         }
-        response = self.client.post(url, data=data)
-        self.assertEqual(response.status_code, 2001)
-        self.assertEqual(response.data["count"], 1)
+        url = reverse("login")
+        login = self.client.post(url, data, format="json")
 
+        access_token = login.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+
+        url = reverse("interview_comment_create", kwargs={"slug": self.interview.slug})
+        data = {"text": "Comment Text", "user": self.user}
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 201)
+
+        print(response.data)

@@ -23,7 +23,7 @@ class BackOfficeInterviewTestCase(APITestCase):
             style_type=InterviewStyleStatusChoices.STYLE_1,
             status=StatusChoices.DRAFT,
             subtitle="Subtitle Test",
-            video_url="https://www.figma.com/file/"
+            video_url="https://www.figma.com/file/",
         )
 
     def test_interview_list(self):
