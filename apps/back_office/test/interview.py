@@ -15,6 +15,7 @@ class BackOfficeInterviewTestCase(APITestCase):
             password="new_pass",
         )
         self.profile = Profile.objects.create(user=self.user, info="User info", role=Role.author)
+        self.tag = Tag.objects.create(name="Tag 1")
 
         self.interview = Interview.objects.create(
             title="Title",
@@ -22,9 +23,8 @@ class BackOfficeInterviewTestCase(APITestCase):
             style_type=InterviewStyleStatusChoices.STYLE_1,
             status=StatusChoices.DRAFT,
             subtitle="Subtitle Test",
-            video_url="https://www.figma.com/file/",
+            video_url="https://www.figma.com/file/"
         )
-        self.tag = Tag.objects.create(name="Tag 1")
 
     def test_interview_list(self):
         data = {

@@ -11,8 +11,8 @@ class PhotoReportListAPITest(APITestCase):
         self.user = User.objects.create_user(phone_number="+998644321232", password="my_pass123")
 
         self.photoreport = PhotoReport.objects.create(
-            title="test1",
-            slug="test1",
+            title="title",
+            slug="title",
             desc="testdesc1",
         )
 

@@ -1,9 +1,10 @@
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from apps.common.models import Tag
 from apps.interview.choices import InterviewStyleStatusChoices, StatusChoices
-from apps.interview.models import Interview
+from apps.interview.models import Interview, Comment
 from apps.users.models import User
 
 
@@ -22,7 +23,15 @@ class InterviewTestCase(APITestCase):
             subtitle="Subtitle Test",
             video_url="https://www.figma.com/file/",
         )
+        self.uploaded_file_png = SimpleUploadedFile("cover.jpg", b"file_content", content_type="image/jpeg")
+
         self.tag = Tag.objects.create(name="Tag 1")
+        self.comment = Comment.objects.create(
+            interview=self.interview,
+            user=self.user,
+            text='Comment Text',
+            image=self.uploaded_file_png
+        )
 
     def test_interview_list(self):
         url = reverse("interview-list")
@@ -38,3 +47,22 @@ class InterviewTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Interview.objects.count(), 1)
+
+    def test_interview_comment_list(self):
+        url = reverse("interview_comments")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["count"], 1)
+
+    def test_interview_comment_create(self):
+        url = reverse('interview_comment_create', kwargs={
+            "slug": self.interview.slug
+        })
+        data = {
+            "text": "Comment Text",
+            "user" : self.user
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 2001)
+        self.assertEqual(response.data["count"], 1)
+
