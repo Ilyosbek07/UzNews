@@ -177,7 +177,81 @@ class ContentLike(BaseModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="%(app_label)s_%(class)s_related",
+        related_name="content_like_user",
+        verbose_name=_("User"),
+    )
+
+    objects = CountLikeManager()
+
+    def __str__(self):
+        return f"{self.content_type}"
+
+    class Meta:
+        unique_together = ("content_type", "object_id", "user")
+
+
+class CountReportManager(models.Manager):
+    def create_for_object(self, obj, user, status):
+        content_type = ContentType.objects.get_for_model(obj)
+        return self.create(
+            content_type=content_type, object_id=obj.id, user=user, status=status
+        )
+
+
+class ContentReport(BaseModel):
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        related_name="content_comment_user",
+        verbose_name=_("Content Report"),
+        null=True,
+        blank=True,
+    )
+    object_id = models.PositiveIntegerField(verbose_name=_("Object id"))
+    content_object = GenericForeignKey("content_type", "object_id")
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="content_report",
+        verbose_name=_("User"),
+    )
+
+    objects = CountLikeManager()
+
+    def __str__(self):
+        return f"{self.content_type}"
+
+    class Meta:
+        unique_together = ("content_type", "object_id", "user")
+
+
+class CountCommentManager(models.Manager):
+    def create_for_object(self, obj, user, status):
+        content_type = ContentType.objects.get_for_model(obj)
+        return self.create(
+            content_type=content_type, object_id=obj.id, user=user, status=status
+        )
+
+
+class ContentComment(BaseModel):
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        related_name="content_comment",
+        verbose_name=_("Content comment"),
+        null=True,
+        blank=True,
+    )
+    object_id = models.PositiveIntegerField(verbose_name=_("Object id"))
+    content_object = GenericForeignKey("content_type", "object_id")
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="content_comment_user",
         verbose_name=_("User"),
     )
 

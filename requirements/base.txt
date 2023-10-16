@@ -14,5 +14,4 @@ django-ckeditor
 django-filter
 requests
 django-auditlog
-
-
+opencv-python
