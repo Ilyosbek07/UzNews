@@ -18,6 +18,7 @@ urlpatterns = [
     path("review/", include("apps.review.urls")),
     path("podcast/", include("apps.podcast.urls")),
     path("api-auth/", include("rest_framework.urls")),
+    path("opinion/", include("apps.opinion.urls")),
 ]
 
 urlpatterns += swagger_urlpatterns

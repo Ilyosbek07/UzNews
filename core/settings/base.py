@@ -54,6 +54,7 @@ CUSTOM_APPS = [
     "apps.photoreport",
     "apps.review",
     "apps.back_office",
+    "apps.opinion",
 ]
 
 THIRD_PARTY_APPS = [
