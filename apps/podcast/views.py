@@ -87,7 +87,6 @@ class PodcastCommentsView(generics.ListAPIView):
                     Case(When(profile=profile, then=True), default=False), output_field=BooleanField()
                 )
             )
-            .order_by("-created_at")
         )
         filter_type = self.request.GET.get("filter_type")
         return filter_comments(queryset, filter_type)
